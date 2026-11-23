@@ -1,0 +1,1439 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Mobius</title>
+  <link rel="stylesheet" th:href="@{/css/style.css(v='2')}" href="/css/style.css?v=2" />
+  <link rel="stylesheet" th:href="@{/css/login.css(v='2')}" href="/css/login.css?v=2" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+<body class="login-page">
+  <header>
+    <nav>
+      <i class="fa-solid fa-otter brand-icon" aria-hidden="true"></i>
+      <a class="logo" th:href="@{/}">Mobiüs</a>
+      <div class="mobile-menu">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+      <ul class="nav-list">
+        <li><a th:href="@{/sobre}">Sobre</a></li>
+        <li><a th:href="@{/pontos}">Pontos de coleta</a></li>
+        <li><a th:href="@{/contato}">Contato</a></li>
+        <li><a th:href="@{/entrar}">Entrar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Notificação visual de E-mail de Confirmação Recebido -->
+  <aside id="emailToast" class="email-toast-notification" role="status" aria-live="polite">
+    <div class="email-toast-head">
+      <div class="email-toast-sender">
+        <i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>
+        <div>
+          <div>Novo E-mail • Mobius Segurança</div>
+          <small id="emailToastTo" style="font-weight: 600; color: #58725d;">para voce@exemplo.com</small>
+        </div>
+      </div>
+      <button type="button" id="closeEmailToastBtn" class="email-toast-close" aria-label="Fechar e-mail">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="email-toast-body">
+      Olá! Recebemos uma solicitação para redefinir a senha da sua conta <strong>Mobius</strong>. Use o código de verificação de 6 dígitos abaixo:
+      <div class="email-toast-code-box">
+        <span id="emailToastCode" class="email-toast-code">000000</span>
+        <button type="button" id="autoFillOtpBtn" class="email-toast-fill-btn">
+          <i class="fa-solid fa-paste" aria-hidden="true"></i> Colar código
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <section class="login-shell" aria-label="Tela de login e conta do usuário">
+      <aside class="login-side">
+        <div class="login-mascot-card">
+          <img th:src="@{/img/Otter.png}" alt="Mascote lontra da Mobius" class="login-otter-img" />
+        </div>
+
+        <div class="login-side-text">
+          <span class="login-tag">
+            <i class="fa-solid fa-seedling" aria-hidden="true"></i>
+            Bem-vindo de volta
+          </span>
+          <h1>Acesse sua conta na Mobius</h1>
+          <p>
+            Entre com seus dados para manter suas preferências salvas no navegador,
+            consultar pontos de coleta favoritos e acompanhar sua jornada sustentável.
+          </p>
+          <ul class="login-benefits">
+            <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Dados salvos com segurança no seu dispositivo</li>
+            <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Verificação por código de 6 dígitos no e-mail</li>
+            <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Integração direta com o mapa de ecopontos</li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="login-form-wrap">
+        <!-- ================= TELA DE LOGIN ================= -->
+        <div id="loginView" class="login-view">
+          <h2>Entrar na conta</h2>
+          <p class="subtitle">Acesse sua conta e deixe seus dados armazenados.</p>
+
+          <div class="top-meta">
+            <span class="badge">
+              <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+              Ambiente seguro
+            </span>
+            <span class="helper">Campos com * são obrigatórios</span>
+          </div>
+
+          <form id="loginForm" novalidate>
+            <input id="tipoContaLogin" name="tipoConta" type="hidden" value="cliente" />
+            <div class="type-switch" aria-label="Tipo de conta">
+              <button class="type-option is-active" type="button" data-type="cliente">
+                <i class="fa-solid fa-user" aria-hidden="true"></i> Cliente
+              </button>
+              <button class="type-option" type="button" data-type="empresa">
+                <i class="fa-solid fa-building" aria-hidden="true"></i> Empresa
+              </button>
+            </div>
+
+            <div class="form-grid">
+              <div class="field full">
+                <label for="loginEmail">E-mail <span class="required">*</span></label>
+                <div class="input-with-icon">
+                  <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                  <input
+                    id="loginEmail"
+                    name="email"
+                    type="email"
+                    placeholder="voce@exemplo.com"
+                    autocomplete="email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="field full">
+                <label for="loginSenha">Senha <span class="required">*</span></label>
+                <div class="input-with-icon has-toggle">
+                  <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                  <input
+                    id="loginSenha"
+                    name="senha"
+                    type="password"
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    id="toggleSenhaBtn"
+                    class="toggle-pass-btn"
+                    aria-label="Mostrar ou ocultar senha"
+                    title="Mostrar/ocultar senha"
+                  >
+                    <i class="fa-solid fa-eye" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="forgot-pass-row">
+                  <button type="button" id="openForgotPassBtn" class="forgot-pass-link">
+                    Esqueceu ou quer redefinir a senha?
+                  </button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="loginNome" id="labelLoginNome">Seu nome <span class="required">*</span></label>
+                <div class="input-with-icon">
+                  <i class="fa-solid fa-id-card" aria-hidden="true"></i>
+                  <input
+                    id="loginNome"
+                    name="nome"
+                    type="text"
+                    placeholder="Como quer ser chamado(a)"
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="loginCidade">Cidade</label>
+                <div class="input-with-icon">
+                  <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                  <input
+                    id="loginCidade"
+                    name="cidade"
+                    type="text"
+                    placeholder="Sua cidade"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- ================= REDEFINIR SENHA EM 3 ETAPAS (IGUAL SITES FAMOSOS) ================= -->
+            <div id="forgotPassBox" class="forgot-pass-box">
+              <h4><i class="fa-solid fa-key" aria-hidden="true"></i> Redefinir senha da conta</h4>
+              <p id="forgotSubtitle">Confirme seu e-mail com o código de segurança para criar uma nova senha.</p>
+
+              <!-- Barra de progresso das 3 etapas -->
+              <div class="reset-stepper" aria-label="Etapas de redefinição de senha">
+                <div id="forgotStepInd1" class="reset-step-item is-active">
+                  <span class="reset-step-num">1</span>
+                  <span>E-mail</span>
+                </div>
+                <div class="reset-step-line"></div>
+                <div id="forgotStepInd2" class="reset-step-item">
+                  <span class="reset-step-num">2</span>
+                  <span>Código</span>
+                </div>
+                <div class="reset-step-line"></div>
+                <div id="forgotStepInd3" class="reset-step-item">
+                  <span class="reset-step-num">3</span>
+                  <span>Nova Senha</span>
+                </div>
+              </div>
+
+              <!-- ETAPA 1: Enviar código para o e-mail -->
+              <div id="forgotStep1" class="reset-step-pane is-active">
+                <div class="form-grid" style="padding: 12px;">
+                  <div class="field full">
+                    <label for="forgotEmail">E-mail da conta <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                      <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                      <input id="forgotEmail" type="email" placeholder="voce@exemplo.com" />
+                    </div>
+                  </div>
+                  <div class="field full" style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; margin-top: 4px;">
+                    <button type="button" id="sendForgotCodeBtn" class="btn-submit" style="height: 38px; min-width: 190px; font-size: 0.86rem;">
+                      <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Enviar código de confirmação
+                    </button>
+                    <button type="button" id="closeForgotPassBtn" class="link-btn" style="height: 38px; font-size: 0.86rem;">
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ETAPA 2: Inserir e verificar o código de 6 dígitos enviado ao e-mail -->
+              <div id="forgotStep2" class="reset-step-pane">
+                <div class="form-grid" style="padding: 12px; display: block;">
+                  <div class="field full">
+                    <label>Digite o código de 6 dígitos enviado para <strong id="forgotSentEmailLabel">seu e-mail</strong> <span class="required">*</span></label>
+                    <div class="otp-code-wrap">
+                      <div id="forgotOtpGroup" class="otp-inputs-row">
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 1" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 2" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 3" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 4" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 5" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 6" />
+                      </div>
+                      <div class="otp-meta-row">
+                        <span id="forgotTimerText">Não recebeu o código?</span>
+                        <button type="button" id="resendForgotCodeBtn" class="resend-code-btn">
+                          Reenviar código
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+                    <button type="button" id="verifyForgotCodeBtn" class="btn-submit" style="height: 38px; min-width: 165px; font-size: 0.86rem;">
+                      <i class="fa-solid fa-shield-check" aria-hidden="true"></i> Verificar código
+                    </button>
+                    <button type="button" id="backToForgotStep1Btn" class="link-btn" style="height: 38px; font-size: 0.86rem;">
+                      Trocar e-mail
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ETAPA 3: Código verificado -> Criar Nova Senha -->
+              <div id="forgotStep3" class="reset-step-pane">
+                <div class="form-grid" style="padding: 12px;">
+                  <div class="field full">
+                    <div class="verified-pill-banner">
+                      <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                      Código verificado com sucesso! Agora escolha sua nova senha.
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label for="forgotNovaSenha">Nova senha <span class="required">*</span></label>
+                    <input id="forgotNovaSenha" type="password" placeholder="Nova senha" />
+                  </div>
+                  <div class="field">
+                    <label for="forgotConfirmaSenha">Confirmar senha <span class="required">*</span></label>
+                    <input id="forgotConfirmaSenha" type="password" placeholder="Repita a nova senha" />
+                  </div>
+                  <div class="field full" style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; margin-top: 4px;">
+                    <button type="button" id="saveForgotPassBtn" class="btn-submit" style="height: 38px; min-width: 160px; font-size: 0.86rem;">
+                      <i class="fa-solid fa-check" aria-hidden="true"></i> Salvar nova senha
+                    </button>
+                    <button type="button" id="cancelForgotStep3Btn" class="link-btn" style="height: 38px; font-size: 0.86rem;">
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <label class="check-row" for="manterConectado">
+              <input id="manterConectado" name="manterConectado" type="checkbox" checked />
+              <span>Manter minha conta conectada e armazenar meus dados neste navegador.</span>
+            </label>
+
+            <div id="loginFeedback" class="login-feedback" role="alert"></div>
+
+            <div class="actions">
+              <button type="submit" class="btn-submit">
+                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+                Entrar na conta
+              </button>
+              <a class="link-btn" th:href="@{/cadastro}">
+                <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+                Criar cadastro completo
+              </a>
+            </div>
+
+            <div id="savedAccountsBox" class="saved-accounts-box" style="display: none;">
+              <div class="saved-accounts-title">
+                <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+                Contas salvas neste dispositivo (clique para preencher):
+              </div>
+              <div id="savedAccountsList" class="saved-accounts-list"></div>
+            </div>
+
+            <p class="form-note">
+              * Seus dados ficam salvos localmente no navegador (LocalStorage) para seus próximos acessos.
+            </p>
+          </form>
+        </div>
+
+        <!-- ================= PAINEL DO USUÁRIO LOGADO ================= -->
+        <div id="userSessionPanel" class="user-session-panel" aria-live="polite">
+          <h2>Minha Conta</h2>
+          <p class="subtitle">Você está conectado(a)! Gerencie seus dados, senha ou conta abaixo.</p>
+
+          <div class="user-header-card">
+            <div id="userAvatar" class="user-avatar">M</div>
+            <div class="user-header-info">
+              <h3 id="displayUserName">Usuário Mobius</h3>
+              <p id="displayUserEmail">usuario@exemplo.com</p>
+              <span id="displayUserType" class="user-type-pill">
+                <i class="fa-solid fa-user" aria-hidden="true"></i> Cliente
+              </span>
+            </div>
+          </div>
+
+          <div class="stored-data-card">
+            <div class="stored-data-header">
+              <h4>
+                <i class="fa-solid fa-database" aria-hidden="true"></i>
+                Dados Armazenados do Usuário
+              </h4>
+              <span class="storage-status-tag">
+                <i class="fa-solid fa-check" aria-hidden="true"></i> Salvo no navegador
+              </span>
+            </div>
+
+            <div id="storedDataGrid" class="stored-data-grid"></div>
+
+            <!-- Abas de alteração da conta: Editar Dados, Redefinir Senha, Excluir Conta -->
+            <div class="account-manage-tabs" aria-label="Opções de alteração da conta">
+              <button type="button" id="toggleEditBtn" class="manage-tab-btn">
+                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                Alterar dados
+              </button>
+              <button type="button" id="toggleResetPassBtn" class="manage-tab-btn">
+                <i class="fa-solid fa-key" aria-hidden="true"></i>
+                Redefinir senha
+              </button>
+              <button type="button" id="toggleDeleteAccountBtn" class="manage-tab-btn danger-tab">
+                <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                Excluir conta
+              </button>
+            </div>
+
+            <!-- 1. Edição rápida dos dados armazenados -->
+            <div id="editProfileBox" class="edit-profile-box">
+              <form id="editProfileForm" class="form-grid" style="margin-top: 8px;">
+                <div class="field">
+                  <label for="editNome">Nome / Razão Social</label>
+                  <input id="editNome" type="text" required />
+                </div>
+                <div class="field">
+                  <label for="editTelefone">Telefone</label>
+                  <input id="editTelefone" type="tel" placeholder="(00) 00000-0000" />
+                </div>
+                <div class="field">
+                  <label for="editCidade">Cidade</label>
+                  <input id="editCidade" type="text" placeholder="Sua cidade" />
+                </div>
+                <div class="field">
+                  <label for="editInteresse">Interesse Principal</label>
+                  <select id="editInteresse">
+                    <option value="">Selecione...</option>
+                    <option value="coleta">Pontos de coleta</option>
+                    <option value="educacao">Educação ambiental</option>
+                    <option value="compostagem">Compostagem</option>
+                    <option value="voluntariado">Voluntariado</option>
+                  </select>
+                </div>
+                <div class="field full" style="display: flex; flex-direction: row; gap: 10px; margin-top: 4px;">
+                  <button type="submit" class="btn-submit" style="height: 38px; min-width: 140px; font-size: 0.88rem;">
+                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Salvar alterações
+                  </button>
+                  <button type="button" id="cancelEditBtn" class="link-btn" style="height: 38px; font-size: 0.88rem;">
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 2. Redefinir senha da conta logada (também com envio e verificação de código por e-mail) -->
+            <div id="resetPasswordBox" class="edit-profile-box">
+              <div class="reset-stepper" style="margin-top: 8px;">
+                <div id="accountStepInd1" class="reset-step-item is-active">
+                  <span class="reset-step-num">1</span>
+                  <span>Confirmar E-mail</span>
+                </div>
+                <div class="reset-step-line"></div>
+                <div id="accountStepInd2" class="reset-step-item">
+                  <span class="reset-step-num">2</span>
+                  <span>Código</span>
+                </div>
+                <div class="reset-step-line"></div>
+                <div id="accountStepInd3" class="reset-step-item">
+                  <span class="reset-step-num">3</span>
+                  <span>Nova Senha</span>
+                </div>
+              </div>
+
+              <!-- Etapa 1 no painel logado -->
+              <div id="accountResetStep1" class="reset-step-pane is-active">
+                <div class="form-grid" style="padding: 12px;">
+                  <div class="field full">
+                    <label for="accountResetEmail">Enviar código de segurança para o e-mail da conta <span class="required">*</span></label>
+                    <input id="accountResetEmail" type="email" readonly />
+                  </div>
+                  <div class="field full" style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" id="sendAccountCodeBtn" class="btn-submit" style="height: 38px; min-width: 190px; font-size: 0.86rem;">
+                      <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Enviar código no e-mail
+                    </button>
+                    <button type="button" id="cancelResetPassBtn" class="link-btn" style="height: 38px; font-size: 0.86rem;">
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Etapa 2 no painel logado -->
+              <div id="accountResetStep2" class="reset-step-pane">
+                <div class="form-grid" style="padding: 12px; display: block;">
+                  <div class="field full">
+                    <label>Digite o código de 6 dígitos enviado para <strong id="accountSentEmailLabel">seu e-mail</strong> <span class="required">*</span></label>
+                    <div class="otp-code-wrap">
+                      <div id="accountOtpGroup" class="otp-inputs-row">
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 1" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 2" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 3" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 4" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 5" />
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Dígito 6" />
+                      </div>
+                      <div class="otp-meta-row">
+                        <span id="accountTimerText">Não recebeu o código?</span>
+                        <button type="button" id="resendAccountCodeBtn" class="resend-code-btn">
+                          Reenviar código
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" id="verifyAccountCodeBtn" class="btn-submit" style="height: 38px; min-width: 160px; font-size: 0.86rem;">
+                      <i class="fa-solid fa-shield-check" aria-hidden="true"></i> Verificar código
+                    </button>
+                    <button type="button" id="cancelAccountStep2Btn" class="link-btn" style="height: 38px; font-size: 0.86rem;">
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Etapa 3 no painel logado -->
+              <div id="accountResetStep3" class="reset-step-pane">
+                <form id="resetPasswordForm" class="form-grid" style="margin-top: 8px;">
+                  <div class="field full">
+                    <div class="verified-pill-banner">
+                      <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                      Código verificado! Digite abaixo sua nova senha.
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label for="novaSenhaConta">Nova senha <span class="required">*</span></label>
+                    <input
+                      id="novaSenhaConta"
+                      type="password"
+                      placeholder="Nova senha"
+                      required
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="confirmaNovaSenhaConta">Confirmar senha <span class="required">*</span></label>
+                    <input
+                      id="confirmaNovaSenhaConta"
+                      type="password"
+                      placeholder="Repita a nova senha"
+                      required
+                    />
+                  </div>
+                  <div class="field full" style="display: flex; flex-direction: row; gap: 10px; margin-top: 4px;">
+                    <button type="submit" class="btn-submit" style="height: 38px; min-width: 160px; font-size: 0.88rem;">
+                      <i class="fa-solid fa-check" aria-hidden="true"></i> Salvar nova senha
+                    </button>
+                    <button type="button" id="cancelAccountStep3Btn" class="link-btn" style="height: 38px; font-size: 0.88rem;">
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- 3. Excluir conta permanentemente -->
+            <div id="deleteAccountBox" class="delete-confirm-box">
+              <h5>
+                <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                Tem certeza que deseja excluir sua conta?
+              </h5>
+              <p>
+                Essa ação removerá todos os dados salvos desta conta do navegador. Você poderá criar um novo cadastro quando quiser.
+              </p>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button type="button" id="confirmDeleteAccountBtn" class="btn-confirm-delete">
+                  <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                  Sim, excluir minha conta
+                </button>
+                <button type="button" id="cancelDeleteAccountBtn" class="link-btn" style="height: 38px; font-size: 0.86rem;">
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="sessionFeedback" class="login-feedback" role="alert"></div>
+
+          <div class="actions">
+            <a class="btn-submit" th:href="@{/pontos}">
+              <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+              Ver Pontos de Coleta
+            </a>
+            <button type="button" id="logoutBtn" class="link-btn btn-danger">
+              <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+              Sair da conta
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_USERS_KEY = "mobius_usuarios";
+    const STORAGE_SESSION_KEY = "mobius_usuario_logado";
+
+    // ── URL base do back-end Spring Boot ──────────────────────────────────────
+    const API_BASE = window.location.origin;
+
+    const loginView = document.getElementById("loginView");
+    const userSessionPanel = document.getElementById("userSessionPanel");
+    const loginForm = document.getElementById("loginForm");
+    const loginFeedback = document.getElementById("loginFeedback");
+    const sessionFeedback = document.getElementById("sessionFeedback");
+
+    const tipoContaInput = document.getElementById("tipoContaLogin");
+    const typeButtons = document.querySelectorAll(".type-option");
+    const labelLoginNome = document.getElementById("labelLoginNome");
+    const loginEmailInput = document.getElementById("loginEmail");
+    const loginSenhaInput = document.getElementById("loginSenha");
+    const loginNomeInput = document.getElementById("loginNome");
+    const loginCidadeInput = document.getElementById("loginCidade");
+    const manterConectadoInput = document.getElementById("manterConectado");
+    const toggleSenhaBtn = document.getElementById("toggleSenhaBtn");
+
+    // Email Notification Toast
+    const emailToast = document.getElementById("emailToast");
+    const emailToastTo = document.getElementById("emailToastTo");
+    const emailToastCode = document.getElementById("emailToastCode");
+    const closeEmailToastBtn = document.getElementById("closeEmailToastBtn");
+    const autoFillOtpBtn = document.getElementById("autoFillOtpBtn");
+
+    let activeVerification = {
+      code: null,
+      email: null,
+      context: null, // 'forgot' | 'account'
+      timerId: null,
+    };
+
+    // Forgot password on login view elements
+    const openForgotPassBtn = document.getElementById("openForgotPassBtn");
+    const closeForgotPassBtn = document.getElementById("closeForgotPassBtn");
+    const forgotPassBox = document.getElementById("forgotPassBox");
+    const sendForgotCodeBtn = document.getElementById("sendForgotCodeBtn");
+    const verifyForgotCodeBtn = document.getElementById("verifyForgotCodeBtn");
+    const resendForgotCodeBtn = document.getElementById("resendForgotCodeBtn");
+    const backToForgotStep1Btn = document.getElementById("backToForgotStep1Btn");
+    const saveForgotPassBtn = document.getElementById("saveForgotPassBtn");
+    const cancelForgotStep3Btn = document.getElementById("cancelForgotStep3Btn");
+
+    const savedAccountsBox = document.getElementById("savedAccountsBox");
+    const savedAccountsList = document.getElementById("savedAccountsList");
+
+    // Account management boxes & buttons
+    const editProfileBox = document.getElementById("editProfileBox");
+    const resetPasswordBox = document.getElementById("resetPasswordBox");
+    const deleteAccountBox = document.getElementById("deleteAccountBox");
+
+    const toggleEditBtn = document.getElementById("toggleEditBtn");
+    const toggleResetPassBtn = document.getElementById("toggleResetPassBtn");
+    const toggleDeleteAccountBtn = document.getElementById("toggleDeleteAccountBtn");
+
+    const editProfileForm = document.getElementById("editProfileForm");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+
+    const sendAccountCodeBtn = document.getElementById("sendAccountCodeBtn");
+    const verifyAccountCodeBtn = document.getElementById("verifyAccountCodeBtn");
+    const resendAccountCodeBtn = document.getElementById("resendAccountCodeBtn");
+    const resetPasswordForm = document.getElementById("resetPasswordForm");
+    const cancelResetPassBtn = document.getElementById("cancelResetPassBtn");
+    const cancelAccountStep2Btn = document.getElementById("cancelAccountStep2Btn");
+    const cancelAccountStep3Btn = document.getElementById("cancelAccountStep3Btn");
+
+    const confirmDeleteAccountBtn = document.getElementById("confirmDeleteAccountBtn");
+    const cancelDeleteAccountBtn = document.getElementById("cancelDeleteAccountBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    function getStoredUsers() {
+      try {
+        const raw = localStorage.getItem(STORAGE_USERS_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveStoredUsers(users) {
+      localStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(users));
+    }
+
+    function getLoggedUser() {
+      try {
+        const raw =
+          localStorage.getItem(STORAGE_SESSION_KEY) ||
+          sessionStorage.getItem(STORAGE_SESSION_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function setLoggedUser(user, persist = true) {
+      const serialized = JSON.stringify(user);
+      if (persist) {
+        localStorage.setItem(STORAGE_SESSION_KEY, serialized);
+        sessionStorage.removeItem(STORAGE_SESSION_KEY);
+      } else {
+        sessionStorage.setItem(STORAGE_SESSION_KEY, serialized);
+        localStorage.removeItem(STORAGE_SESSION_KEY);
+      }
+    }
+
+    function showFeedback(el, message, type = "success") {
+      el.className = `login-feedback is-visible ${type}`;
+      const icon = type === "error" ? "fa-circle-exclamation" : "fa-circle-check";
+      el.innerHTML = `<i class="fa-solid ${icon}" aria-hidden="true"></i> <span>${message}</span>`;
+    }
+
+    function clearFeedback(el) {
+      el.className = "login-feedback";
+      el.innerHTML = "";
+    }
+
+    /* =========================================================
+       OTP 6-Digit Inputs Behavior (Auto-focus, Backspace, Paste)
+       ========================================================= */
+    function setupOtpInputs(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const inputs = Array.from(container.querySelectorAll(".otp-digit"));
+
+      inputs.forEach((input, idx) => {
+        input.addEventListener("input", (e) => {
+          const val = e.target.value.replace(/\D/g, "");
+          e.target.value = val ? val[0] : "";
+          if (val && idx < inputs.length - 1) {
+            inputs[idx + 1].focus();
+          }
+        });
+
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && !input.value && idx > 0) {
+            inputs[idx - 1].focus();
+          }
+        });
+
+        input.addEventListener("paste", (e) => {
+          e.preventDefault();
+          const pasted = (e.clipboardData || window.clipboardData)
+            .getData("text")
+            .replace(/\D/g, "")
+            .slice(0, 6);
+          if (!pasted) return;
+          pasted.split("").forEach((char, i) => {
+            if (inputs[i]) inputs[i].value = char;
+          });
+          const focusIndex = Math.min(pasted.length, inputs.length - 1);
+          inputs[focusIndex].focus();
+        });
+      });
+    }
+
+    function getOtpValue(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return "";
+      return Array.from(container.querySelectorAll(".otp-digit"))
+        .map((i) => i.value.trim())
+        .join("");
+    }
+
+    function clearOtpInputs(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.querySelectorAll(".otp-digit").forEach((i) => {
+        i.value = "";
+      });
+    }
+
+    function fillOtpInputs(containerId, code) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const inputs = Array.from(container.querySelectorAll(".otp-digit"));
+      String(code)
+        .split("")
+        .forEach((digit, idx) => {
+          if (inputs[idx]) inputs[idx].value = digit;
+        });
+    }
+
+    setupOtpInputs("forgotOtpGroup");
+    setupOtpInputs("accountOtpGroup");
+
+    /* =========================================================
+       Gerador e Simulador de Envio de Código por E-mail
+       ========================================================= */
+    function generateSixDigitCode() {
+      return String(Math.floor(100000 + Math.random() * 900000));
+    }
+
+    function startResendCountdown(buttonEl, textEl) {
+      if (activeVerification.timerId) {
+        clearInterval(activeVerification.timerId);
+      }
+      let remaining = 30;
+      buttonEl.disabled = true;
+      textEl.textContent = `Reenviar disponível em ${remaining}s`;
+
+      activeVerification.timerId = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(activeVerification.timerId);
+          buttonEl.disabled = false;
+          textEl.textContent = "Não recebeu o código?";
+        } else {
+          textEl.textContent = `Reenviar disponível em ${remaining}s`;
+        }
+      }, 1000);
+    }
+
+    function triggerConfirmationEmail(email, context) {
+      const code = generateSixDigitCode();
+      activeVerification.code = code;
+      activeVerification.email = email;
+      activeVerification.context = context;
+
+      emailToastTo.textContent = `para ${email}`;
+      emailToastCode.textContent = code;
+      emailToast.classList.add("is-visible");
+    }
+
+    closeEmailToastBtn.addEventListener("click", () => {
+      emailToast.classList.remove("is-visible");
+    });
+
+    autoFillOtpBtn.addEventListener("click", () => {
+      if (!activeVerification.code) return;
+      const groupId =
+        activeVerification.context === "account" ? "accountOtpGroup" : "forgotOtpGroup";
+      fillOtpInputs(groupId, activeVerification.code);
+      emailToast.classList.remove("is-visible");
+    });
+
+    /* =========================================================
+       Controle de Etapas (1 -> 2 -> 3) na Redefinição de Senha
+       ========================================================= */
+    function setForgotStep(step) {
+      [1, 2, 3].forEach((n) => {
+        const pane = document.getElementById(`forgotStep${n}`);
+        const ind = document.getElementById(`forgotStepInd${n}`);
+        if (pane) pane.classList.toggle("is-active", n === step);
+        if (ind) {
+          ind.classList.toggle("is-active", n === step);
+          ind.classList.toggle("is-done", n < step);
+        }
+      });
+    }
+
+    function setAccountResetStep(step) {
+      [1, 2, 3].forEach((n) => {
+        const pane = document.getElementById(`accountResetStep${n}`);
+        const ind = document.getElementById(`accountStepInd${n}`);
+        if (pane) pane.classList.toggle("is-active", n === step);
+        if (ind) {
+          ind.classList.toggle("is-active", n === step);
+          ind.classList.toggle("is-done", n < step);
+        }
+      });
+    }
+
+    function closeAllManageBoxes() {
+      editProfileBox.classList.remove("is-open");
+      resetPasswordBox.classList.remove("is-open");
+      deleteAccountBox.classList.remove("is-open");
+      toggleEditBtn.classList.remove("is-active");
+      toggleResetPassBtn.classList.remove("is-active");
+      toggleDeleteAccountBtn.classList.remove("is-active");
+      setAccountResetStep(1);
+    }
+
+    function applyAccountType(type) {
+      tipoContaInput.value = type;
+      typeButtons.forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.type === type);
+      });
+      if (type === "empresa") {
+        labelLoginNome.innerHTML = 'Razão social / Empresa <span class="required">*</span>';
+        loginNomeInput.placeholder = "Nome da sua empresa";
+      } else {
+        labelLoginNome.innerHTML = 'Seu nome <span class="required">*</span>';
+        loginNomeInput.placeholder = "Como quer ser chamado(a)";
+      }
+    }
+
+    typeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => applyAccountType(btn.dataset.type));
+    });
+
+    // Mostrar/ocultar senha no login
+    toggleSenhaBtn.addEventListener("click", () => {
+      const isPassword = loginSenhaInput.type === "password";
+      loginSenhaInput.type = isPassword ? "text" : "password";
+      toggleSenhaBtn.innerHTML = isPassword
+        ? '<i class="fa-solid fa-eye-slash" aria-hidden="true"></i>'
+        : '<i class="fa-solid fa-eye" aria-hidden="true"></i>';
+    });
+
+    /* =========================================================
+       Fluxo 1: Redefinir Senha na Tela de Login (3 Etapas)
+       ========================================================= */
+    openForgotPassBtn.addEventListener("click", () => {
+      forgotPassBox.classList.toggle("is-open");
+      setForgotStep(1);
+      clearOtpInputs("forgotOtpGroup");
+      const currentTypedEmail = loginEmailInput.value.trim();
+      if (currentTypedEmail) {
+        document.getElementById("forgotEmail").value = currentTypedEmail;
+      }
+      clearFeedback(loginFeedback);
+    });
+
+    closeForgotPassBtn.addEventListener("click", () => {
+      forgotPassBox.classList.remove("is-open");
+      emailToast.classList.remove("is-visible");
+    });
+
+    cancelForgotStep3Btn.addEventListener("click", () => {
+      forgotPassBox.classList.remove("is-open");
+    });
+
+    backToForgotStep1Btn.addEventListener("click", () => {
+      setForgotStep(1);
+      clearFeedback(loginFeedback);
+    });
+
+    sendForgotCodeBtn.addEventListener("click", () => {
+      clearFeedback(loginFeedback);
+      const email = document.getElementById("forgotEmail").value.trim().toLowerCase();
+      if (!email || !email.includes("@")) {
+        showFeedback(loginFeedback, "Informe um e-mail válido para receber o código de confirmação.", "error");
+        return;
+      }
+
+      document.getElementById("forgotSentEmailLabel").textContent = email;
+      clearOtpInputs("forgotOtpGroup");
+      setForgotStep(2);
+      triggerConfirmationEmail(email, "forgot");
+      startResendCountdown(resendForgotCodeBtn, document.getElementById("forgotTimerText"));
+      showFeedback(
+        loginFeedback,
+        `Enviamos um código de 6 dígitos para ${email}. Verifique a notificação de e-mail para continuar.`,
+        "success"
+      );
+      const firstInput = document.querySelector("#forgotOtpGroup .otp-digit");
+      if (firstInput) firstInput.focus();
+    });
+
+    resendForgotCodeBtn.addEventListener("click", () => {
+      const email = document.getElementById("forgotEmail").value.trim().toLowerCase();
+      if (!email) return;
+      clearOtpInputs("forgotOtpGroup");
+      triggerConfirmationEmail(email, "forgot");
+      startResendCountdown(resendForgotCodeBtn, document.getElementById("forgotTimerText"));
+      showFeedback(loginFeedback, `Um novo código foi enviado para ${email}.`, "success");
+    });
+
+    verifyForgotCodeBtn.addEventListener("click", () => {
+      clearFeedback(loginFeedback);
+      const typedCode = getOtpValue("forgotOtpGroup");
+      if (typedCode.length < 6) {
+        showFeedback(loginFeedback, "Digite todos os 6 dígitos do código enviado ao seu e-mail.", "error");
+        return;
+      }
+
+      if (typedCode !== activeVerification.code) {
+        showFeedback(loginFeedback, "Código de verificação incorreto. Confira o código enviado ao e-mail.", "error");
+        return;
+      }
+
+      emailToast.classList.remove("is-visible");
+      setForgotStep(3);
+      showFeedback(loginFeedback, "Código confirmado! Agora você pode criar sua nova senha.", "success");
+      document.getElementById("forgotNovaSenha").focus();
+    });
+
+    saveForgotPassBtn.addEventListener("click", async () => {
+      const email = document.getElementById("forgotEmail").value.trim().toLowerCase();
+      const novaSenha = document.getElementById("forgotNovaSenha").value.trim();
+      const confirma = document.getElementById("forgotConfirmaSenha").value.trim();
+
+      if (!novaSenha || !confirma) {
+        showFeedback(loginFeedback, "Preencha a nova senha e a confirmação.", "error");
+        return;
+      }
+
+      if (novaSenha !== confirma) {
+        showFeedback(loginFeedback, "As novas senhas digitadas não coincidem.", "error");
+        return;
+      }
+
+      // Tentar atualizar no back-end
+      try {
+        const response = await fetch(`${API_BASE}/api/usuario/senha`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, novaSenha }),
+        });
+        const data = await response.json();
+        if (!data.ok) {
+          showFeedback(loginFeedback, data.erro || "Erro ao redefinir senha.", "error");
+          return;
+        }
+      } catch (err) {
+        console.warn("Back-end indisponível; senha atualizada apenas localmente.");
+      }
+
+      // Atualizar no localStorage também
+      const users = getStoredUsers();
+      const idx = users.findIndex((u) => (u.email || "").toLowerCase() === email);
+      if (idx >= 0) {
+        users[idx].senha = novaSenha;
+      }
+      saveStoredUsers(users);
+
+      forgotPassBox.classList.remove("is-open");
+      setForgotStep(1);
+      loginEmailInput.value = email;
+      loginSenhaInput.value = novaSenha;
+
+      document.getElementById("forgotNovaSenha").value = "";
+      document.getElementById("forgotConfirmaSenha").value = "";
+
+      showFeedback(
+        loginFeedback,
+        "Senha redefinida com sucesso após verificação por e-mail! Clique em 'Entrar na conta'.",
+        "success"
+      );
+    });
+
+    /* =========================================================
+       Fluxo 2: Redefinir Senha no Painel Minha Conta (3 Etapas)
+       ========================================================= */
+    sendAccountCodeBtn.addEventListener("click", () => {
+      clearFeedback(sessionFeedback);
+      const currentUser = getLoggedUser();
+      if (!currentUser || !currentUser.email) return;
+
+      const email = currentUser.email.trim().toLowerCase();
+      document.getElementById("accountSentEmailLabel").textContent = email;
+      clearOtpInputs("accountOtpGroup");
+      setAccountResetStep(2);
+      triggerConfirmationEmail(email, "account");
+      startResendCountdown(resendAccountCodeBtn, document.getElementById("accountTimerText"));
+      showFeedback(
+        sessionFeedback,
+        `Código de confirmação enviado para ${email}. Confira a notificação de e-mail!`,
+        "success"
+      );
+      const firstInput = document.querySelector("#accountOtpGroup .otp-digit");
+      if (firstInput) firstInput.focus();
+    });
+
+    resendAccountCodeBtn.addEventListener("click", () => {
+      const currentUser = getLoggedUser();
+      if (!currentUser || !currentUser.email) return;
+      const email = currentUser.email.trim().toLowerCase();
+      clearOtpInputs("accountOtpGroup");
+      triggerConfirmationEmail(email, "account");
+      startResendCountdown(resendAccountCodeBtn, document.getElementById("accountTimerText"));
+      showFeedback(sessionFeedback, `Novo código enviado para ${email}.`, "success");
+    });
+
+    verifyAccountCodeBtn.addEventListener("click", () => {
+      clearFeedback(sessionFeedback);
+      const typedCode = getOtpValue("accountOtpGroup");
+      if (typedCode.length < 6) {
+        showFeedback(sessionFeedback, "Digite os 6 dígitos do código enviado ao seu e-mail.", "error");
+        return;
+      }
+
+      if (typedCode !== activeVerification.code) {
+        showFeedback(sessionFeedback, "Código inválido. Verifique o código de 6 dígitos enviado.", "error");
+        return;
+      }
+
+      emailToast.classList.remove("is-visible");
+      setAccountResetStep(3);
+      showFeedback(sessionFeedback, "Código verificado! Agora defina sua nova senha abaixo.", "success");
+      document.getElementById("novaSenhaConta").focus();
+    });
+
+    cancelAccountStep2Btn.addEventListener("click", () => {
+      closeAllManageBoxes();
+    });
+
+    cancelAccountStep3Btn.addEventListener("click", () => {
+      closeAllManageBoxes();
+    });
+
+    // Autopreencher dados caso o e-mail digitado já exista no LocalStorage
+    loginEmailInput.addEventListener("input", () => {
+      const email = loginEmailInput.value.trim().toLowerCase();
+      if (!email) return;
+      const users = getStoredUsers();
+      const found = users.find((u) => (u.email || "").toLowerCase() === email);
+      if (found) {
+        if (found.nome && !loginNomeInput.value) {
+          loginNomeInput.value = found.nome;
+        }
+        if (found.cidade && !loginCidadeInput.value) {
+          loginCidadeInput.value = found.cidade;
+        }
+        if (found.tipoCadastro) {
+          applyAccountType(found.tipoCadastro);
+        }
+      }
+    });
+
+    const INTERESSE_LABELS = {
+      coleta: "Pontos de coleta",
+      educacao: "Educação ambiental",
+      compostagem: "Compostagem",
+      voluntariado: "Voluntariado",
+    };
+
+    function renderSavedAccountsChips() {
+      const users = getStoredUsers();
+      if (!users.length) {
+        savedAccountsBox.style.display = "none";
+        return;
+      }
+      savedAccountsBox.style.display = "block";
+      savedAccountsList.innerHTML = "";
+      users.forEach((u) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "saved-account-chip";
+        const displayName = u.nome || u.razaoSocial || u.email;
+        chip.innerHTML = `<i class="fa-solid fa-user-check" aria-hidden="true"></i> ${displayName} (${u.email})`;
+        chip.addEventListener("click", () => {
+          loginEmailInput.value = u.email || "";
+          loginNomeInput.value = u.nome || u.razaoSocial || "";
+          loginCidadeInput.value = u.cidade || "";
+          if (u.tipoCadastro) applyAccountType(u.tipoCadastro);
+          loginSenhaInput.focus();
+        });
+        savedAccountsList.appendChild(chip);
+      });
+    }
+
+    function renderUserSession(user) {
+      if (!user) {
+        loginView.classList.remove("is-hidden");
+        userSessionPanel.classList.remove("is-active");
+        closeAllManageBoxes();
+        renderSavedAccountsChips();
+        return;
+      }
+
+      loginView.classList.add("is-hidden");
+      userSessionPanel.classList.add("is-active");
+
+      const displayName =
+        user.nomeCompleto ||
+        [user.nome, user.sobrenome].filter(Boolean).join(" ") ||
+        user.razaoSocial ||
+        "Usuário Mobius";
+
+      document.getElementById("userAvatar").textContent = displayName
+        .charAt(0)
+        .toUpperCase();
+      document.getElementById("displayUserName").textContent = displayName;
+      document.getElementById("displayUserEmail").textContent = user.email || "-";
+      document.getElementById("accountResetEmail").value = user.email || "";
+
+      const isEmpresa = user.tipoCadastro === "empresa";
+      const typeEl = document.getElementById("displayUserType");
+      typeEl.innerHTML = isEmpresa
+        ? '<i class="fa-solid fa-building" aria-hidden="true"></i> Conta Empresa'
+        : '<i class="fa-solid fa-user" aria-hidden="true"></i> Conta Cliente';
+
+      const items = [
+        {
+          label: isEmpresa ? "Razão Social / Nome" : "Nome",
+          value: displayName,
+        },
+        {
+          label: "E-mail",
+          value: user.email || "Não informado",
+        },
+        {
+          label: "Cidade",
+          value: user.cidade || "Não informada",
+        },
+        {
+          label: "Telefone",
+          value: user.telefone || "Não informado",
+        },
+      ];
+
+      if (isEmpresa) {
+        if (user.cnpj) {
+          items.push({ label: "CNPJ", value: user.cnpj });
+        }
+        if (user.responsavel) {
+          items.push({ label: "Responsável", value: user.responsavel });
+        }
+      } else {
+        items.push({
+          label: "Interesse Principal",
+          value: INTERESSE_LABELS[user.interesse] || user.interesse || "Reciclagem geral",
+        });
+      }
+
+      items.push({
+        label: "Último acesso registrado",
+        value: user.ultimoAcesso || new Date().toLocaleString("pt-BR"),
+      });
+
+      const grid = document.getElementById("storedDataGrid");
+      grid.innerHTML = items
+        .map(
+          (item) => `
+          <div class="stored-item">
+            <span class="stored-label">${item.label}</span>
+            <div class="stored-value">${item.value}</div>
+          </div>
+        `
+        )
+        .join("");
+
+      // Preencher formulário de edição
+      document.getElementById("editNome").value = displayName;
+      document.getElementById("editTelefone").value = user.telefone || "";
+      document.getElementById("editCidade").value = user.cidade || "";
+      document.getElementById("editInteresse").value = user.interesse || "";
+    }
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearFeedback(loginFeedback);
+
+      const email = loginEmailInput.value.trim().toLowerCase();
+      const senha = loginSenhaInput.value.trim();
+
+      if (!email || !senha) {
+        showFeedback(loginFeedback, "Por favor, preencha seu e-mail e senha.", "error");
+        return;
+      }
+
+      const btnSubmit = loginForm.querySelector(".btn-submit");
+      if (btnSubmit) { btnSubmit.disabled = true; }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, senha }),
+        });
+
+        const data = await response.json();
+
+        if (data.ok) {
+          const userRecord = {
+            ...data.usuario,
+            ultimoAcesso: new Date().toLocaleString("pt-BR"),
+          };
+          setLoggedUser(userRecord, manterConectadoInput.checked);
+          renderUserSession(userRecord);
+          showFeedback(sessionFeedback, "Login realizado com sucesso!", "success");
+          if (typeof window.updateNavbarUser === "function") window.updateNavbarUser();
+        } else {
+          showFeedback(loginFeedback, data.erro || "Credenciais inválidas. Tente novamente.", "error");
+        }
+      } catch (err) {
+        showFeedback(loginFeedback, "Não foi possível conectar ao servidor. Verifique se o back-end está em execução.", "error");
+      } finally {
+        if (btnSubmit) { btnSubmit.disabled = false; }
+      }
+    });
+
+    // Alternar abas de gerenciamento da conta (Alterar dados / Redefinir senha / Excluir conta)
+    toggleEditBtn.addEventListener("click", () => {
+      const wasOpen = editProfileBox.classList.contains("is-open");
+      closeAllManageBoxes();
+      clearFeedback(sessionFeedback);
+      if (!wasOpen) {
+        editProfileBox.classList.add("is-open");
+        toggleEditBtn.classList.add("is-active");
+      }
+    });
+
+    cancelEditBtn.addEventListener("click", () => {
+      closeAllManageBoxes();
+    });
+
+    toggleResetPassBtn.addEventListener("click", () => {
+      const wasOpen = resetPasswordBox.classList.contains("is-open");
+      closeAllManageBoxes();
+      clearFeedback(sessionFeedback);
+      if (!wasOpen) {
+        resetPasswordBox.classList.add("is-open");
+        toggleResetPassBtn.classList.add("is-active");
+        setAccountResetStep(1);
+      }
+    });
+
+    cancelResetPassBtn.addEventListener("click", () => {
+      closeAllManageBoxes();
+    });
+
+    toggleDeleteAccountBtn.addEventListener("click", () => {
+      const wasOpen = deleteAccountBox.classList.contains("is-open");
+      closeAllManageBoxes();
+      clearFeedback(sessionFeedback);
+      if (!wasOpen) {
+        deleteAccountBox.classList.add("is-open");
+        toggleDeleteAccountBtn.classList.add("is-active");
+      }
+    });
+
+    cancelDeleteAccountBtn.addEventListener("click", () => {
+      closeAllManageBoxes();
+    });
+
+    // 1. Salvar alteração de dados do perfil
+    editProfileForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const currentUser = getLoggedUser();
+      if (!currentUser) return;
+
+      const novoNome     = document.getElementById("editNome").value.trim() || currentUser.nome;
+      const novoTelefone = document.getElementById("editTelefone").value.trim();
+      const novaCidade   = document.getElementById("editCidade").value.trim();
+      const novoInteresse = document.getElementById("editInteresse").value;
+
+      try {
+        const response = await fetch(`${API_BASE}/api/usuario/atualizar`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: currentUser.email,
+            nome: novoNome,
+            telefone: novoTelefone,
+            cidade: novaCidade,
+            interesse: novoInteresse,
+          }),
+        });
+        const data = await response.json();
+        if (!data.ok) {
+          showFeedback(sessionFeedback, data.erro || "Erro ao atualizar dados.", "error");
+          return;
+        }
+      } catch (err) {
+        // Se o servidor não estiver disponível, continua salvando localmente
+        console.warn("Back-end indisponível; dados salvos apenas localmente.");
+      }
+
+      const updatedUser = {
+        ...currentUser,
+        nome: novoNome,
+        nomeCompleto: novoNome,
+        telefone: novoTelefone,
+        cidade: novaCidade,
+        interesse: novoInteresse,
+        ultimoAcesso: new Date().toLocaleString("pt-BR"),
+      };
+
+      const users = getStoredUsers();
+      const idx = users.findIndex(
+        (u) => (u.email || "").toLowerCase() === (currentUser.email || "").toLowerCase()
+      );
+      if (idx >= 0) users[idx] = updatedUser; else users.push(updatedUser);
+
+      saveStoredUsers(users);
+      setLoggedUser(updatedUser, true);
+      closeAllManageBoxes();
+      renderUserSession(updatedUser);
+      showFeedback(sessionFeedback, "Seus dados foram atualizados com sucesso!", "success");
+
+      if (typeof window.updateNavbarUser === "function") window.updateNavbarUser();
+    });
+
+    // 2. Redefinir senha da conta logada (Etapa 3 final)
+    resetPasswordForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const currentUser = getLoggedUser();
+      if (!currentUser) return;
+
+      const novaSenha = document.getElementById("novaSenhaConta").value.trim();
+      const confirmaSenha = document.getElementById("confirmaNovaSenhaConta").value.trim();
+
+      if (!novaSenha) {
+        showFeedback(sessionFeedback, "Por favor, digite a nova senha.", "error");
+        return;
+      }
+
+      if (novaSenha !== confirmaSenha) {
+        showFeedback(sessionFeedback, "As senhas digitadas não coincidem.", "error");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/usuario/senha`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: currentUser.email, novaSenha }),
+        });
+        const data = await response.json();
+        if (!data.ok) {
+          showFeedback(sessionFeedback, data.erro || "Erro ao redefinir senha.", "error");
+          return;
+        }
+      } catch (err) {
+        console.warn("Back-end indisponível; senha atualizada apenas localmente.");
+      }
+
+      const updatedUser = {
+        ...currentUser,
+        senha: novaSenha,
+        ultimoAcesso: new Date().toLocaleString("pt-BR"),
+      };
+
+      const users = getStoredUsers();
+      const idx = users.findIndex(
+        (u) => (u.email || "").toLowerCase() === (currentUser.email || "").toLowerCase()
+      );
+      if (idx >= 0) users[idx] = updatedUser; else users.push(updatedUser);
+
+      saveStoredUsers(users);
+      setLoggedUser(updatedUser, true);
+      document.getElementById("novaSenhaConta").value = "";
+      document.getElementById("confirmaNovaSenhaConta").value = "";
+      closeAllManageBoxes();
+      showFeedback(sessionFeedback, "Sua senha foi redefinida com sucesso!", "success");
+    });
+
+    // 3. Excluir conta permanentemente
+    confirmDeleteAccountBtn.addEventListener("click", async () => {
+      const currentUser = getLoggedUser();
+      if (!currentUser) return;
+
+      try {
+        await fetch(`${API_BASE}/api/usuario`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: currentUser.email }),
+        });
+      } catch (err) {
+        console.warn("Back-end indisponível; conta removida apenas localmente.");
+      }
+
+      const users = getStoredUsers().filter(
+        (u) => (u.email || "").toLowerCase() !== (currentUser.email || "").toLowerCase()
+      );
+      saveStoredUsers(users);
+
+      localStorage.removeItem(STORAGE_SESSION_KEY);
+      sessionStorage.removeItem(STORAGE_SESSION_KEY);
+
+      loginEmailInput.value = "";
+      loginSenhaInput.value = "";
+      loginNomeInput.value = "";
+      loginCidadeInput.value = "";
+
+      clearFeedback(sessionFeedback);
+      renderUserSession(null);
+      showFeedback(loginFeedback, "Sua conta e todos os seus dados foram excluídos com sucesso.", "success");
+
+      if (typeof window.updateNavbarUser === "function") window.updateNavbarUser();
+    });
+
+    // Logout
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_SESSION_KEY);
+      sessionStorage.removeItem(STORAGE_SESSION_KEY);
+      clearFeedback(sessionFeedback);
+      loginSenhaInput.value = "";
+      renderUserSession(null);
+      showFeedback(
+        loginFeedback,
+        "Você saiu da sua conta. Seus dados continuam salvos para o próximo login.",
+        "success"
+      );
+      if (typeof window.updateNavbarUser === "function") {
+        window.updateNavbarUser();
+      }
+    });
+
+    // Inicializar estado ao carregar a página
+    renderUserSession(getLoggedUser());
+  </script>
+  <script th:src="@{/js/teste.js(v='2')}" src="/js/teste.js?v=2"></script>
+</body>
+</html>
+
