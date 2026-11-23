@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobiüs</title>
+</head>
+<body>
+<div th:fragment="menu">
+    <header>
+        <nav>
+            <i class="fa-solid fa-otter brand-icon" aria-hidden="true"></i>
+            <a class="logo" th:href="@{/}">Mobiüs</a>
+            <div class="mobile-menu">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <ul class="nav-list">
+                <li><a th:href="@{/sobre}">Sobre</a></li>
+                <li><a th:href="@{/pontos}">Pontos de coleta</a></li>
+                <li><a th:href="@{/contato}">Contato</a></li>
+                <li><a th:href="@{/entrar}">Entrar</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+</body>
+</html>

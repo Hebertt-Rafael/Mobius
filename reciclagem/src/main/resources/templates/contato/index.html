@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contato | Mobiüs Reciclagem</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/contato.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body class="contato-page">
+
+  <header>
+    <nav>
+      <i class="fa-solid fa-otter brand-icon" aria-hidden="true"></i>
+      <a class="logo" th:href="@{/}">Mobiüs</a>
+      <div class="mobile-menu">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+      <ul class="nav-list">
+        <li><a th:href="@{/sobre}">Sobre</a></li>
+        <li><a th:href="@{/pontos}">Pontos de coleta</a></li>
+        <li><a th:href="@{/contato}">Contato</a></li>
+        <li><a th:href="@{/entrar}">Entrar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="contato-hero" aria-label="Apresentação da página de contato">
+      <span class="contato-badge">
+        <i class="fa-solid fa-comments" aria-hidden="true"></i>
+        Canais de Atendimento
+      </span>
+      <h1>Fale com a equipe da Mobiüs</h1>
+      <p>
+        Tem dúvidas sobre separação de resíduos, quer sugerir um novo ponto de coleta, propor uma parceria ou dar um feedback?
+        Escolha o canal de sua preferência ou preencha o formulário abaixo!
+      </p>
+    </section>
+
+    <!-- Quick Channels 4 Cards -->
+    <section class="channels-grid" aria-label="Canais rápidos de contato">
+      <article class="channel-card whatsapp">
+        <div class="channel-icon-wrap">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        </div>
+        <h3>WhatsApp Direto</h3>
+        <p>Atendimento rápido e esclarecimento de dúvidas pontuais.</p>
+        <a href="https://wa.me/5500000000000?text=Ol%C3%A1%2C%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20com%20a%20Mobius%20Reciclagem!"
+           target="_blank" rel="noopener noreferrer" class="channel-action-btn">
+          <i class="fa-brands fa-whatsapp"></i> Iniciar Conversa
+        </a>
+      </article>
+
+      <article class="channel-card email">
+        <span class="copied-toast" id="emailCopiedToast">Copiado!</span>
+        <div class="channel-icon-wrap">
+          <i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>
+        </div>
+        <h3>E-mail Oficial</h3>
+        <p>Para dúvidas detalhadas, projetos e questões formais.</p>
+        <button type="button" class="channel-action-btn" id="copyEmailBtn">
+          <i class="fa-regular fa-copy"></i> Copiar E-mail
+        </button>
+      </article>
+
+      <article class="channel-card instagram">
+        <div class="channel-icon-wrap">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </div>
+        <h3>Instagram</h3>
+        <p>Dicas diárias, novidades ambientais e comunidade.</p>
+        <a href="https://instagram.com/mobiusreciclagem" target="_blank" rel="noopener noreferrer" class="channel-action-btn">
+          <i class="fa-brands fa-instagram"></i> @mobiusreciclagem
+        </a>
+      </article>
+
+      <article class="channel-card horario">
+        <div class="channel-icon-wrap">
+          <i class="fa-regular fa-clock" aria-hidden="true"></i>
+        </div>
+        <h3>Horário &amp; Prazos</h3>
+        <p>Segunda a Sexta das 8h às 18h.<br />Retorno em até 24 horas úteis.</p>
+        <span class="channel-action-btn" style="cursor:default; background:#f4f7f2;">
+          <i class="fa-solid fa-circle-check" style="color:#588157;"></i> Equipe Ativa
+        </span>
+      </article>
+    </section>
+
+    <!-- Two-column Layout -->
+    <div class="contato-layout">
+
+      <!-- Formulário -->
+      <section class="contato-form-container" id="formSection" aria-label="Formulário de mensagem">
+
+        <!-- Mensagem de Sucesso (exibida após POST) -->
+        <div class="form-success-overlay" id="successOverlay"
+             th:classappend="${sucesso} ? 'is-visible' : ''">
+          <div class="success-icon-wrap">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h3>Mensagem Enviada!</h3>
+          <p>Obrigado pelo seu contato! Nossa equipe responderá em até 24 horas úteis no seu canal preferido.</p>
+          <button type="button" class="btn-reset" id="resetFormBtn">
+            <i class="fa-solid fa-rotate-left"></i> Enviar outra mensagem
+          </button>
+        </div>
+
+        <div class="form-header">
+          <h2>Envie uma Mensagem Direta</h2>
+          <p>Selecione o assunto para personalizar o atendimento:</p>
+        </div>
+
+        <!-- Topic Pills -->
+        <div class="topic-selector-wrap">
+          <span class="topic-selector-label">Qual é o motivo do seu contato?</span>
+          <div class="topic-pills" id="topicPills" role="tablist">
+            <button type="button" class="topic-pill active" data-subject="Dúvida Geral sobre Reciclagem">
+              <i class="fa-solid fa-circle-question"></i> Dúvida Geral
+            </button>
+            <button type="button" class="topic-pill" data-subject="Sugerir Novo Ponto de Coleta">
+              <i class="fa-solid fa-location-dot"></i> Sugerir Ecoponto
+            </button>
+            <button type="button" class="topic-pill" data-subject="Parceria Empresarial ou Escolar">
+              <i class="fa-solid fa-handshake"></i> Parcerias
+            </button>
+            <button type="button" class="topic-pill" data-subject="Reportar Informação no Mapa">
+              <i class="fa-solid fa-triangle-exclamation"></i> Reportar Ponto
+            </button>
+            <button type="button" class="topic-pill" data-subject="Outros Assuntos">
+              <i class="fa-solid fa-comment-dots"></i> Outro
+            </button>
+          </div>
+        </div>
+
+        <form id="contactForm" th:action="@{/contato}" th:object="${contato}" method="post">
+          <input type="hidden" id="assuntoHidden" th:field="*{assunto}" value="Dúvida Geral sobre Reciclagem" />
+
+          <div class="contato-fields-grid">
+            <div class="form-group">
+              <label for="nome">Seu Nome <span class="req">*</span></label>
+              <input id="nome" th:field="*{nome}" type="text" placeholder="Ex.: Laura Silva" required />
+              <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Seu E-mail <span class="req">*</span></label>
+              <input id="email" th:field="*{email}" type="email" placeholder="voce@exemplo.com" required />
+              <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="telefone">WhatsApp / Telefone</label>
+              <input id="telefone" th:field="*{telefone}" type="tel" placeholder="(00) 00000-0000" />
+            </div>
+
+            <div class="form-group">
+              <label for="cidade">Sua Cidade / Estado <span class="req">*</span></label>
+              <input id="cidade" th:field="*{cidade}" type="text" placeholder="Ex.: São Paulo - SP" required />
+              <span class="error" th:if="${#fields.hasErrors('cidade')}" th:errors="*{cidade}"></span>
+            </div>
+
+            <!-- Campo extra: Sugerir Ecoponto -->
+            <div class="form-group full" id="extraPontoField" style="display: none;">
+              <label for="enderecoPonto">Endereço e detalhes do novo ecoponto sugerido</label>
+              <input id="enderecoPonto" th:field="*{enderecoPonto}" type="text"
+                     placeholder="Ex.: Rua Vergueiro, 1200 - Bairro - Aceita Plástico e Vidro" />
+            </div>
+
+            <!-- Campo extra: Parceria -->
+            <div class="form-group full" id="extraParceriaField" style="display: none;">
+              <label for="tipoParceria">Instituição / Tipo de Parceria</label>
+              <select id="tipoParceria" th:field="*{tipoParceria}">
+                <option value="">Selecione o tipo</option>
+                <option value="Escola / Universidade">Escola / Universidade</option>
+                <option value="Empresa / Indústria">Empresa / Indústria</option>
+                <option value="Cooperativa de Reciclagem">Cooperativa de Reciclagem</option>
+                <option value="Condomínio Residencial">Condomínio Residencial</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label for="mensagem">
+                <span>Sua Mensagem <span class="req">*</span></span>
+                <span class="char-counter" id="charCounter">0 / 500</span>
+              </label>
+              <textarea id="mensagem" th:field="*{mensagem}" maxlength="500"
+                        placeholder="Como podemos te ajudar hoje?" required></textarea>
+              <span class="error" th:if="${#fields.hasErrors('mensagem')}" th:errors="*{mensagem}"></span>
+            </div>
+          </div>
+
+          <div class="reply-pref">
+            <span class="reply-pref-title">Preferência de retorno:</span>
+            <div class="pref-options">
+              <label class="pref-option">
+                <input type="radio" th:field="*{preferencia}" value="email" /> E-mail
+              </label>
+              <label class="pref-option">
+                <input type="radio" th:field="*{preferencia}" value="whatsapp" /> WhatsApp
+              </label>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-send" id="submitBtn">
+              <i class="fa-solid fa-paper-plane"></i> Enviar Mensagem
+            </button>
+            <span class="form-privacy-note">
+              <i class="fa-solid fa-shield-halved"></i> Seus dados estão seguros e protegidos.
+            </span>
+          </div>
+        </form>
+      </section>
+
+      <!-- Side Widgets -->
+      <aside class="contato-side-column">
+        <article class="suggest-ecopoint-card">
+          <span class="suggest-tag">
+            <i class="fa-solid fa-map-pin"></i> Colaborativo
+          </span>
+          <h3>Conhece um ecoponto que não está no mapa?</h3>
+          <p>Ajude a comunidade da sua cidade! Envie as informações do ponto de coleta e nossa equipe validará para incluir no mapa oficial do Brasil.</p>
+          <button type="button" class="btn-suggest-point" id="btnQuickSuggest">
+            <i class="fa-solid fa-plus"></i> Indicar Ponto Agora
+          </button>
+        </article>
+
+        <article class="mascot-tip-widget">
+          <div class="mascot-avatar-small">
+            <img th:src="@{/img/Otter.png}" alt="Lontra da Mobiüs" />
+          </div>
+          <div class="mascot-tip-text">
+            <strong>Dica da Lontra:</strong>
+            <p>
+              Procurando onde descartar vidro, papel ou eletrônicos agora mesmo? Nosso
+              <a th:href="@{/pontos}" style="color:#588157; font-weight:700; text-decoration:underline;">mapa com mais de 540 pontos</a>
+              permite filtrar por estado e bairro em poucos segundos!
+            </p>
+          </div>
+        </article>
+      </aside>
+    </div>
+
+    <!-- FAQ Accordion -->
+    <section class="contato-faq-section" aria-label="Perguntas frequentes">
+      <div class="contato-faq-header">
+        <h2>Dúvidas Rápidas Antes de Enviar</h2>
+        <p>Veja se a sua pergunta já está respondida aqui</p>
+      </div>
+
+      <div class="accordion-list">
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>1. A Mobiüs cobra alguma taxa para cadastrar ou consultar ecopontos?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>Não! A plataforma Mobiüs é <strong>100% gratuita</strong> e de livre acesso para todos os cidadãos, escolas, cooperativas e empresas.</p>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>2. Como funciona a moderação de novos pontos de coleta sugeridos?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>Após o envio da sugestão pelo formulário, a nossa equipe verifica o endereço, materiais aceitos e horários de funcionamento. Uma vez verificado, ele é adicionado ao mapa público.</p>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>3. Como propor palestras ou programas de educação ambiental na minha escola/empresa?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>Selecione a categoria <em>"Parcerias"</em> no formulário acima, preencha os dados da sua instituição e detalhe o seu interesse.</p>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>4. O que devo fazer se encontrar um ponto de coleta desativado no mapa?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>Selecione o botão <em>"Reportar Ponto"</em> no formulário e informe o nome ou localização do ponto.</p>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>5. Qual o tempo médio de resposta para mensagens enviadas?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>Respondemos todas as mensagens em até <strong>24 horas úteis</strong> (de segunda a sexta-feira, das 8h às 18h).</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer id="rodape">
+    <div class="footer-content">
+      <h2>Fale com a Mobiüs</h2>
+      <p class="footer-subtitle">Tem dúvidas sobre coleta seletiva? Chama a gente.</p>
+      <ul class="contact-list">
+        <li><a href="mailto:contato@mobiusreciclagem.com.br"><i class="fa-solid fa-envelope" aria-hidden="true"></i> contato@mobiusreciclagem.com.br</a></li>
+        <li><a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp: (00) 00000-0000</a></li>
+        <li><a href="https://instagram.com/mobiusreciclagem" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @mobiusreciclagem</a></li>
+      </ul>
+      <p class="footer-copy">Mobiüs Reciclagem - Cuidando da natureza com você.</p>
+    </div>
+  </footer>
+
+  <script>
+    // 1. Copiar E-mail
+    const copyEmailBtn = document.getElementById("copyEmailBtn");
+    const emailCopiedToast = document.getElementById("emailCopiedToast");
+    if (copyEmailBtn) {
+      copyEmailBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText("contato@mobiusreciclagem.com.br").then(() => {
+          emailCopiedToast.classList.add("show");
+          setTimeout(() => emailCopiedToast.classList.remove("show"), 2000);
+        });
+      });
+    }
+
+    // 2. Topic Pills & campos dinâmicos
+    const topicPills      = document.querySelectorAll(".topic-pill");
+    const assuntoHidden   = document.getElementById("assuntoHidden");
+    const extraPontoField = document.getElementById("extraPontoField");
+    const extraParceriaField = document.getElementById("extraParceriaField");
+    const mensagemTextarea   = document.getElementById("mensagem");
+
+    function selectTopic(subject, triggerElement) {
+      topicPills.forEach(p => p.classList.remove("active"));
+      if (triggerElement) triggerElement.classList.add("active");
+      assuntoHidden.value = subject;
+
+      if (subject.includes("Ponto")) {
+        extraPontoField.style.display = "flex";
+        extraParceriaField.style.display = "none";
+        mensagemTextarea.placeholder = "Conte mais sobre o ecoponto (horários, quem gerencia, tipos de resíduos aceitos)...";
+      } else if (subject.includes("Parceria")) {
+        extraPontoField.style.display = "none";
+        extraParceriaField.style.display = "flex";
+        mensagemTextarea.placeholder = "Descreva a proposta de parceria ou ação que gostaria de desenvolver com a Mobiüs...";
+      } else {
+        extraPontoField.style.display = "none";
+        extraParceriaField.style.display = "none";
+        mensagemTextarea.placeholder = "Como podemos te ajudar hoje?";
+      }
+    }
+
+    topicPills.forEach(pill => {
+      pill.addEventListener("click", () => selectTopic(pill.dataset.subject, pill));
+    });
+
+    // 3. Botão lateral "Indicar Ponto Agora"
+    const btnQuickSuggest = document.getElementById("btnQuickSuggest");
+    if (btnQuickSuggest) {
+      btnQuickSuggest.addEventListener("click", () => {
+        const suggestPill = Array.from(topicPills).find(p => p.dataset.subject.includes("Ponto"));
+        if (suggestPill) selectTopic(suggestPill.dataset.subject, suggestPill);
+        document.getElementById("formSection").scrollIntoView({ behavior: "smooth" });
+        document.getElementById("enderecoPonto").focus();
+      });
+    }
+
+    // 4. Contador de caracteres
+    const charCounter = document.getElementById("charCounter");
+    if (mensagemTextarea && charCounter) {
+      mensagemTextarea.addEventListener("input", () => {
+        charCounter.textContent = `${mensagemTextarea.value.length} / 500`;
+      });
+    }
+
+    // 5. Máscara de telefone
+    const telefoneInput = document.getElementById("telefone");
+    if (telefoneInput) {
+      telefoneInput.addEventListener("input", e => {
+        let val = e.target.value.replace(/\D/g, "");
+        if (val.length > 11) val = val.slice(0, 11);
+        if (val.length > 6) e.target.value = `(${val.slice(0,2)}) ${val.slice(2,7)}-${val.slice(7)}`;
+        else if (val.length > 2) e.target.value = `(${val.slice(0,2)}) ${val.slice(2)}`;
+        else if (val.length > 0) e.target.value = `(${val}`;
+      });
+    }
+
+    // 6. Botão "Enviar outra mensagem" (reseta overlay de sucesso)
+    const resetFormBtn = document.getElementById("resetFormBtn");
+    if (resetFormBtn) {
+      resetFormBtn.addEventListener("click", () => {
+        document.getElementById("successOverlay").classList.remove("is-visible");
+        charCounter.textContent = "0 / 500";
+        selectTopic("Dúvida Geral sobre Reciclagem", topicPills[0]);
+      });
+    }
+
+    // 7. Accordion FAQ
+    document.querySelectorAll(".accordion-item").forEach(item => {
+      const trigger = item.querySelector(".accordion-trigger");
+      const content = item.querySelector(".accordion-content");
+      trigger.addEventListener("click", () => {
+        const isOpen = item.classList.contains("is-open");
+        document.querySelectorAll(".accordion-item").forEach(other => {
+          other.classList.remove("is-open");
+          other.querySelector(".accordion-trigger").setAttribute("aria-expanded", "false");
+          other.querySelector(".accordion-content").style.maxHeight = null;
+        });
+        if (!isOpen) {
+          item.classList.add("is-open");
+          trigger.setAttribute("aria-expanded", "true");
+          content.style.maxHeight = content.scrollHeight + 30 + "px";
+        }
+      });
+    });
+  </script>
+  <script th:src="@{/teste.js}"></script>
+</body>
+</html>
