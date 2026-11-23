@@ -1,0 +1,432 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pontos de Coleta | Mapa do Brasil</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/pontosdecoleta.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+<body class="pontos-page">
+  <header>
+    <nav>
+      <i class="fa-solid fa-otter brand-icon" aria-hidden="true"></i>
+      <a class="logo" href="index.html">Mobius</a>
+      <div class="mobile-menu">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+      <ul class="nav-list">
+        <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="pntosdecoleta.html">Pontos de coleta</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        <li><a href="login.html">Entrar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="page" aria-label="Pontos de coleta">
+    <section class="card">
+      <div class="row">
+        <div class="map-title">
+          <h2>Mapa do Brasil (por estados)</h2>
+          <p>Clique em um estado (UF) para ver apenas cidades, bairros e pontos existentes.</p>
+        </div>
+        <div class="row">
+          <div class="pill" aria-live="polite">UF: <span id="ufValue">Todas</span></div>
+          <button id="clearUfBtn" class="btn" type="button">Limpar UF</button>
+        </div>
+      </div>
+
+      <div id="brMap" aria-label="Mapa do Brasil por estados"></div>
+
+      <div class="legend" aria-label="Legenda do mapa">
+        <span><i class="dot default" aria-hidden="true"></i> normal</span>
+        <span><i class="dot hover" aria-hidden="true"></i> hover</span>
+        <span><i class="dot selected" aria-hidden="true"></i> selecionado</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h1>Pontos de Coleta</h1>
+      <p class="hint">
+        Selecione uma <strong>UF</strong> no mapa. Depois escolha a cidade e o bairro para filtrar.
+      </p>
+
+      <div class="field">
+        <label for="cidadeSelect">Cidade</label>
+        <select id="cidadeSelect">
+          <option value="all">Todas as cidades</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="bairroSelect">Bairro</label>
+        <select id="bairroSelect">
+          <option value="all">Todos os bairros</option>
+        </select>
+      </div>
+
+      <div id="counter" class="counter">0 pontos encontrados.</div>
+      <div id="listaPontos" class="list"></div>
+    </section>
+  </main>
+
+  <script>
+    const basePontosDeColeta = [
+      // Alguns pontos "base" (você pode editar livremente)
+      { nome: "Ecoponto Central", uf: "SP", cidade: "Sao Paulo", bairro: "Vila Mariana", endereco: "Rua Vergueiro, 2100", materiais: "Papel, plastico, vidro e metal" },
+      { nome: "Coleta Verde Zona Norte", uf: "SP", cidade: "Sao Paulo", bairro: "Santana", endereco: "Avenida Braz Leme, 1350", materiais: "Papel, plastico e eletronicos" },
+      { nome: "Ponto Sustentavel Cambui", uf: "SP", cidade: "Campinas", bairro: "Cambui", endereco: "Rua Coronel Quirino, 820", materiais: "Vidro, metal e oleo de cozinha" },
+      { nome: "Ecoponto Ouro Verde", uf: "SP", cidade: "Campinas", bairro: "Ouro Verde", endereco: "Avenida Ruy Rodrigues, 5050", materiais: "Papel, plastico e entulho leve" },
+      { nome: "Ecoponto Lapa", uf: "RJ", cidade: "Rio de Janeiro", bairro: "Lapa", endereco: "Rua do Riachuelo, 120", materiais: "Papel, plastico, vidro e metal" },
+      { nome: "Coleta Seletiva Ipanema", uf: "RJ", cidade: "Rio de Janeiro", bairro: "Ipanema", endereco: "Rua Visconde de Piraja, 500", materiais: "Papel, plastico e vidro" },
+      { nome: "Ecoponto Savassi", uf: "MG", cidade: "Belo Horizonte", bairro: "Savassi", endereco: "Av. Cristovao Colombo, 3000", materiais: "Papel, plastico, vidro e metal" },
+      { nome: "Ponto de Coleta Pampulha", uf: "MG", cidade: "Belo Horizonte", bairro: "Pampulha", endereco: "Av. Otacilio Negrão de Lima, 2000", materiais: "Eletronicos e pilhas" },
+    ];
+
+    const UF_CIDADES = {
+      AC: ["Rio Branco", "Cruzeiro do Sul", "Sena Madureira", "Tarauaca", "Brasileia"],
+      AL: ["Maceio", "Arapiraca", "Palmeira dos Indios", "Penedo", "Rio Largo"],
+      AP: ["Macapa", "Santana", "Laranjal do Jari", "Oiapoque", "Mazagao"],
+      AM: ["Manaus", "Parintins", "Itacoatiara", "Manacapuru", "Tefé"],
+      BA: ["Salvador", "Feira de Santana", "Vitoria da Conquista", "Camaçari", "Ilheus"],
+      CE: ["Fortaleza", "Caucaia", "Juazeiro do Norte", "Sobral", "Maracanau"],
+      DF: ["Brasilia", "Ceilandia", "Taguatinga", "Gama", "Sobradinho"],
+      ES: ["Vitoria", "Vila Velha", "Serra", "Cariacica", "Linhares"],
+      GO: ["Goiania", "Aparecida de Goiania", "Anapolis", "Rio Verde", "Catalão"],
+      MA: ["Sao Luis", "Imperatriz", "Caxias", "Timon", "Bacabal"],
+      MT: ["Cuiaba", "Varzea Grande", "Rondonopolis", "Sinop", "Tangara da Serra"],
+      MS: ["Campo Grande", "Dourados", "Tres Lagoas", "Corumba", "Ponta Pora"],
+      MG: ["Belo Horizonte", "Contagem", "Uberlandia", "Juiz de Fora", "Montes Claros"],
+      PA: ["Belem", "Ananindeua", "Santarém", "Maraba", "Parauapebas"],
+      PB: ["Joao Pessoa", "Campina Grande", "Patos", "Bayeux", "Cabedelo"],
+      PR: ["Curitiba", "Londrina", "Maringa", "Ponta Grossa", "Cascavel"],
+      PE: ["Recife", "Jaboatao dos Guararapes", "Olinda", "Caruaru", "Petrolina"],
+      PI: ["Teresina", "Parnaiba", "Picos", "Floriano", "Piripiri"],
+      RJ: ["Rio de Janeiro", "Niteroi", "Nova Iguacu", "Duque de Caxias", "Petropolis"],
+      RN: ["Natal", "Mossoro", "Parnamirim", "Caico", "Sao Goncalo do Amarante"],
+      RO: ["Porto Velho", "Ji-Parana", "Ariquemes", "Vilhena", "Cacoal"],
+      RR: ["Boa Vista", "Rorainopolis", "Caracarai", "Mucajai", "Amajari"],
+      RS: ["Porto Alegre", "Caxias do Sul", "Pelotas", "Canoas", "Santa Maria"],
+      SC: ["Florianopolis", "Joinville", "Blumenau", "Sao Jose", "Chapeco"],
+      SE: ["Aracaju", "Nossa Senhora do Socorro", "Lagarto", "Itabaiana", "Estancia"],
+      SP: ["Sao Paulo", "Campinas", "Santos", "Sorocaba", "Sao Jose dos Campos"],
+      TO: ["Palmas", "Araguaina", "Gurupi", "Porto Nacional", "Paraiso do Tocantins"],
+    };
+
+    const BAIRROS = ["Centro", "Jardim", "Vila Nova", "Boa Vista", "Industrial", "Planalto", "Santa Clara", "Sao Jose"];
+    const MATERIAIS = [
+      "Papel, plastico, vidro e metal",
+      "Papel, plastico e metal",
+      "Vidro e oleo de cozinha",
+      "Eletronicos e pilhas",
+      "Papel e plastico",
+    ];
+
+    function normalizePoint(p) {
+      return {
+        nome: String(p.nome || "").trim(),
+        uf: String(p.uf || "").trim().toUpperCase(),
+        cidade: String(p.cidade || "").trim(),
+        bairro: String(p.bairro || "").trim(),
+        endereco: String(p.endereco || "").trim(),
+        materiais: String(p.materiais || "").trim(),
+      };
+    }
+
+    function ensureMinPointsPerUF(points, minPerUf) {
+      const out = points.map(normalizePoint).filter((p) => p.uf && p.cidade && p.bairro);
+
+      Object.keys(UF_CIDADES).forEach((uf) => {
+        const have = out.filter((p) => p.uf === uf).length;
+        const need = Math.max(0, minPerUf - have);
+
+        for (let i = 0; i < need; i++) {
+          const cidade = UF_CIDADES[uf][i % UF_CIDADES[uf].length];
+          const bairro = BAIRROS[i % BAIRROS.length];
+          const materiais = MATERIAIS[i % MATERIAIS.length];
+          const num = i + 1;
+
+          out.push({
+            nome: `Ponto de Coleta ${uf} ${String(num).padStart(2, "0")}`,
+            uf,
+            cidade,
+            bairro,
+            endereco: `Av. Principal, ${100 + (i % 50)}`,
+            materiais,
+          });
+        }
+      });
+
+      return out;
+    }
+
+    // Aqui define a inclusão: no mínimo 20 por estado
+    let pontosDeColeta = ensureMinPointsPerUF(basePontosDeColeta, 20);
+
+    // Carrega pontos do back-end caso disponível, mantendo fallback local
+    async function carregarPontosDoServidor() {
+      try {
+        const res = await fetch("http://localhost:80/pontos/api");
+        if (res.ok) {
+          const apiPoints = await res.json();
+          if (Array.isArray(apiPoints) && apiPoints.length > 0) {
+            pontosDeColeta = apiPoints.map(normalizePoint);
+            populateCities();
+            populateBairros();
+            applyFilters();
+          }
+        }
+      } catch (err) {
+        // Back-end indisponível: mantém pontos locais gerados
+      }
+    }
+
+    const brMap = document.getElementById("brMap");
+    const ufValue = document.getElementById("ufValue");
+    const clearUfBtn = document.getElementById("clearUfBtn");
+    const cidadeSelect = document.getElementById("cidadeSelect");
+    const bairroSelect = document.getElementById("bairroSelect");
+    const listaPontos = document.getElementById("listaPontos");
+    const counter = document.getElementById("counter");
+
+    let selectedUf = "all";
+    let highlightedIndex = -1;
+
+    const UF_NAMES = {
+      AC: "Acre",
+      AL: "Alagoas",
+      AP: "Amapa",
+      AM: "Amazonas",
+      BA: "Bahia",
+      CE: "Ceara",
+      DF: "Distrito Federal",
+      ES: "Espirito Santo",
+      GO: "Goias",
+      MA: "Maranhao",
+      MT: "Mato Grosso",
+      MS: "Mato Grosso do Sul",
+      MG: "Minas Gerais",
+      PA: "Para",
+      PB: "Paraiba",
+      PR: "Parana",
+      PE: "Pernambuco",
+      PI: "Piaui",
+      RJ: "Rio de Janeiro",
+      RN: "Rio Grande do Norte",
+      RS: "Rio Grande do Sul",
+      RO: "Rondonia",
+      RR: "Roraima",
+      SC: "Santa Catarina",
+      SP: "Sao Paulo",
+      SE: "Sergipe",
+      TO: "Tocantins",
+    };
+
+    function uniqueValues(arr, key, filterFn) {
+      const base = filterFn ? arr.filter(filterFn) : arr;
+      return [...new Set(base.map((item) => item[key]))].sort();
+    }
+
+    function setSelectEnabled() {
+      const enable = selectedUf !== "all";
+      cidadeSelect.disabled = !enable;
+      bairroSelect.disabled = !enable;
+    }
+
+    function populateCities() {
+      cidadeSelect.innerHTML = '<option value="all">Todas as cidades</option>';
+      const cidades = uniqueValues(
+        pontosDeColeta,
+        "cidade",
+        selectedUf === "all" ? null : (item) => item.uf === selectedUf,
+      );
+      cidades.forEach((cidade) => {
+        const option = document.createElement("option");
+        option.value = cidade;
+        option.textContent = cidade;
+        cidadeSelect.appendChild(option);
+      });
+    }
+
+    function populateBairros() {
+      const cidadeSelecionada = cidadeSelect.value;
+      bairroSelect.innerHTML = '<option value="all">Todos os bairros</option>';
+      const bairros = uniqueValues(pontosDeColeta, "bairro", (item) => {
+        const ufOk = selectedUf === "all" || item.uf === selectedUf;
+        const cidadeOk = cidadeSelecionada === "all" || item.cidade === cidadeSelecionada;
+        return ufOk && cidadeOk;
+      });
+      bairros.forEach((bairro) => {
+        const option = document.createElement("option");
+        option.value = bairro;
+        option.textContent = bairro;
+        bairroSelect.appendChild(option);
+      });
+    }
+
+    function getFilteredPoints() {
+      const cidade = cidadeSelect.value;
+      const bairro = bairroSelect.value;
+      return pontosDeColeta.filter((ponto) => {
+        const ufOk = selectedUf === "all" || ponto.uf === selectedUf;
+        const cidadeOk = cidade === "all" || ponto.cidade === cidade;
+        const bairroOk = bairro === "all" || ponto.bairro === bairro;
+        return ufOk && cidadeOk && bairroOk;
+      });
+    }
+
+    function setHighlighted(index) {
+      const items = listaPontos.querySelectorAll(".list-item");
+      items.forEach((item) => item.classList.remove("active"));
+      if (items[index]) {
+        items[index].classList.add("active");
+        highlightedIndex = index;
+      }
+    }
+
+    function renderLista(points) {
+      listaPontos.innerHTML = "";
+      highlightedIndex = -1;
+
+      if (!points.length) {
+        const empty = document.createElement("div");
+        empty.className = "list-item";
+        empty.textContent = "Nenhum ponto encontrado para este filtro.";
+        listaPontos.appendChild(empty);
+        return;
+      }
+
+      points.forEach((ponto, index) => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        item.innerHTML = `<strong>${ponto.nome}</strong>${ponto.cidade} (${ponto.uf}) - ${ponto.bairro}<br>${ponto.endereco}<br><span style="color: var(--muted);">Materiais: ${ponto.materiais}</span>`;
+        item.addEventListener("click", () => setHighlighted(index));
+        listaPontos.appendChild(item);
+      });
+    }
+
+    function updateCounter(total) {
+      counter.textContent = `${total} ponto${total === 1 ? "" : "s"} encontrado${total === 1 ? "" : "s"}.`;
+    }
+
+    function applyFilters() {
+      const filtered = getFilteredPoints();
+      updateCounter(filtered.length);
+      renderLista(filtered);
+    }
+
+    function setSelectedUF(newUf) {
+      selectedUf = newUf;
+      ufValue.textContent = selectedUf === "all" ? "Todas" : `${selectedUf} - ${UF_NAMES[selectedUf] || ""}`.trim();
+      setSelectEnabled();
+      populateCities();
+      cidadeSelect.value = "all";
+      populateBairros();
+      bairroSelect.value = "all";
+      applyFilters();
+    }
+
+    function clearSvgSelection(svgRoot) {
+      svgRoot.querySelectorAll("path[id].selected").forEach((p) => p.classList.remove("selected"));
+    }
+
+    function addUfLabels(svgRoot) {
+      // Remove labels antigos (se recarregar)
+      svgRoot.querySelectorAll("text.uf-label").forEach((t) => t.remove());
+
+      const ns = "http://www.w3.org/2000/svg";
+      svgRoot.querySelectorAll("path[id]").forEach((path) => {
+        const uf = (path.getAttribute("id") || "").toUpperCase();
+        if (!uf) return;
+
+        const bbox = path.getBBox();
+        const cx = bbox.x + bbox.width / 2;
+        const cy = bbox.y + bbox.height / 2;
+
+        // Fonte adaptativa para estados pequenos (ex: DF)
+        const base = Math.max(9, Math.min(16, Math.round(Math.min(bbox.width, bbox.height) / 5)));
+
+        const text = document.createElementNS(ns, "text");
+        text.classList.add("uf-label");
+        text.setAttribute("x", String(cx));
+        text.setAttribute("y", String(cy));
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("dominant-baseline", "middle");
+        text.setAttribute("font-size", String(base));
+        text.textContent = uf;
+
+        svgRoot.appendChild(text);
+      });
+    }
+
+    async function initBrazilSvgMap() {
+      try {
+        const res = await fetch("brazil.svg", { cache: "no-store" });
+        if (!res.ok) throw new Error("Falha ao carregar brazil.svg");
+        const svgText = await res.text();
+
+        brMap.innerHTML = svgText;
+        const svgRoot = brMap.querySelector("svg");
+        if (!svgRoot) throw new Error("SVG invalido");
+
+        addUfLabels(svgRoot);
+
+        const statePaths = svgRoot.querySelectorAll("path[id]");
+        statePaths.forEach((path) => {
+          const uf = (path.getAttribute("id") || "").toUpperCase();
+          if (!uf) return;
+
+          path.setAttribute("tabindex", "0");
+          path.setAttribute("aria-label", `${UF_NAMES[uf] || "Estado"} (${uf})`);
+
+          const onSelect = () => {
+            clearSvgSelection(svgRoot);
+            path.classList.add("selected");
+            setSelectedUF(uf);
+          };
+
+          path.addEventListener("click", onSelect);
+          path.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onSelect();
+            }
+          });
+        });
+
+        clearUfBtn.addEventListener("click", () => {
+          clearSvgSelection(svgRoot);
+          setSelectedUF("all");
+        });
+      } catch (e) {
+        brMap.innerHTML =
+          '<div style="padding: 14px; color: var(--muted);">Falha ao carregar o mapa. Verifique se o arquivo <strong>brazil.svg</strong> esta na mesma pasta do HTML.</div>';
+      }
+    }
+
+    cidadeSelect.addEventListener("change", () => {
+      populateBairros();
+      bairroSelect.value = "all";
+      applyFilters();
+    });
+
+    bairroSelect.addEventListener("change", applyFilters);
+
+    // Inicial
+    setSelectEnabled();
+    populateCities();
+    populateBairros();
+    applyFilters();
+    initBrazilSvgMap();
+    carregarPontosDoServidor();
+  </script>
+  <script src="teste.js"></script>
+</body>
+</html>

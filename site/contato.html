@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contato | Mobius Reciclagem</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/contato.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+<body class="contato-page">
+  <header>
+    <nav>
+      <i class="fa-solid fa-otter brand-icon" aria-hidden="true"></i>
+      <a class="logo" href="index.html">Mobius</a>
+      <div class="mobile-menu">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+      <ul class="nav-list">
+        <li><a href="sobre.html">Sobre</a></li>
+        <li><a href="pntosdecoleta.html">Pontos de coleta</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        <li><a href="login.html">Entrar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="contato-hero" aria-label="Apresentação da página de contato">
+      <span class="contato-badge">
+        <i class="fa-solid fa-comments" aria-hidden="true"></i>
+        Canais de Atendimento
+      </span>
+      <h1>Fale com a equipe da Mobius</h1>
+      <p>
+        Tem dúvidas sobre separação de resíduos, quer sugerir um novo ponto de coleta, propor uma parceria ou dar um feedback?
+        Escolha o canal de sua preferência ou preencha o formulário abaixo!
+      </p>
+    </section>
+
+    <!-- Quick Channels 4 Cards -->
+    <section class="channels-grid" aria-label="Canais rápidos de contato">
+      <article class="channel-card whatsapp">
+        <div class="channel-icon-wrap">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        </div>
+        <h3>WhatsApp Direto</h3>
+        <p>Atendimento rápido e esclarecimento de dúvidas pontuais.</p>
+        <a
+          href="https://wa.me/5500000000000?text=Ol%C3%A1%2C%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20com%20a%20Mobius%20Reciclagem!"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="channel-action-btn"
+        >
+          <i class="fa-brands fa-whatsapp"></i> Iniciar Conversa
+        </a>
+      </article>
+
+      <article class="channel-card email">
+        <span class="copied-toast" id="emailCopiedToast">Copiado!</span>
+        <div class="channel-icon-wrap">
+          <i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>
+        </div>
+        <h3>E-mail Oficial</h3>
+        <p>Para dúvidas detalhadas, projetos e questões formais.</p>
+        <button type="button" class="channel-action-btn" id="copyEmailBtn">
+          <i class="fa-regular fa-copy"></i> Copiar E-mail
+        </button>
+      </article>
+
+      <article class="channel-card instagram">
+        <div class="channel-icon-wrap">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </div>
+        <h3>Instagram</h3>
+        <p>Dicas diárias, novidades ambientais e comunidade.</p>
+        <a
+          href="https://instagram.com/mobiusreciclagem"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="channel-action-btn"
+        >
+          <i class="fa-brands fa-instagram"></i> @mobiusreciclagem
+        </a>
+      </article>
+
+      <article class="channel-card horario">
+        <div class="channel-icon-wrap">
+          <i class="fa-regular fa-clock" aria-hidden="true"></i>
+        </div>
+        <h3>Horário & Prazos</h3>
+        <p>Segunda a Sexta das 8h às 18h.<br />Retorno em até 24 horas úteis.</p>
+        <span class="channel-action-btn" style="cursor:default; background:#f4f7f2;">
+          <i class="fa-solid fa-circle-check" style="color:#588157;"></i> Equipe Ativa
+        </span>
+      </article>
+    </section>
+
+    <!-- Two-column Layout: Interactive Form + Side Widgets -->
+    <div class="contato-layout">
+      <!-- Interactive Form Container -->
+      <section class="contato-form-container" id="formSection" aria-label="Formulário de mensagem">
+        <div class="form-header">
+          <h2>Envie uma Mensagem Direta</h2>
+          <p>Selecione o assunto para personalizar o atendimento:</p>
+        </div>
+
+        <!-- Topic Pills -->
+        <div class="topic-selector-wrap">
+          <span class="topic-selector-label">Qual é o motivo do seu contato?</span>
+          <div class="topic-pills" id="topicPills" role="tablist">
+            <button type="button" class="topic-pill active" data-subject="Dúvida Geral sobre Reciclagem">
+              <i class="fa-solid fa-circle-question"></i> Dúvida Geral
+            </button>
+            <button type="button" class="topic-pill" data-subject="Sugerir Novo Ponto de Coleta">
+              <i class="fa-solid fa-location-dot"></i> Sugerir Ecoponto
+            </button>
+            <button type="button" class="topic-pill" data-subject="Parceria Empresarial ou Escolar">
+              <i class="fa-solid fa-handshake"></i> Parcerias
+            </button>
+            <button type="button" class="topic-pill" data-subject="Reportar Informação no Mapa">
+              <i class="fa-solid fa-triangle-exclamation"></i> Reportar Ponto
+            </button>
+            <button type="button" class="topic-pill" data-subject="Outros Assuntos">
+              <i class="fa-solid fa-comment-dots"></i> Outro
+            </button>
+          </div>
+        </div>
+
+        <form id="contactForm">
+          <input type="hidden" id="assuntoHidden" name="assunto" value="Dúvida Geral sobre Reciclagem" />
+
+          <div class="contato-fields-grid">
+            <div class="form-group">
+              <label for="nome">Seu Nome <span class="req">*</span></label>
+              <input id="nome" name="nome" type="text" placeholder="Ex.: Laura Silva" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Seu E-mail <span class="req">*</span></label>
+              <input id="email" name="email" type="email" placeholder="voce@exemplo.com" required />
+            </div>
+
+            <div class="form-group">
+              <label for="telefone">WhatsApp / Telefone</label>
+              <input id="telefone" name="telefone" type="tel" placeholder="(00) 00000-0000" />
+            </div>
+
+            <div class="form-group">
+              <label for="cidade">Sua Cidade / Estado <span class="req">*</span></label>
+              <input id="cidade" name="cidade" type="text" placeholder="Ex.: São Paulo - SP" required />
+            </div>
+
+            <!-- Dynamic field for Suggesting Ecopoint -->
+            <div class="form-group full" id="extraPontoField" style="display: none;">
+              <label for="enderecoPonto">Endereço e detalhes do novo ecoponto sugerido</label>
+              <input id="enderecoPonto" name="enderecoPonto" type="text" placeholder="Ex.: Rua Vergueiro, 1200 - Bairro - Aceita Plástico e Vidro" />
+            </div>
+
+            <!-- Dynamic field for Partnership -->
+            <div class="form-group full" id="extraParceriaField" style="display: none;">
+              <label for="tipoParceria">Instituição / Tipo de Parceria</label>
+              <select id="tipoParceria" name="tipoParceria">
+                <option value="">Selecione o tipo</option>
+                <option value="Escola / Universidade">Escola / Universidade</option>
+                <option value="Empresa / Indústria">Empresa / Indústria</option>
+                <option value="Cooperativa de Reciclagem">Cooperativa de Reciclagem</option>
+                <option value="Condomínio Residencial">Condomínio Residencial</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label for="mensagem">
+                <span>Sua Mensagem <span class="req">*</span></span>
+                <span class="char-counter" id="charCounter">0 / 500</span>
+              </label>
+              <textarea
+                id="mensagem"
+                name="mensagem"
+                maxlength="500"
+                placeholder="Como podemos te ajudar hoje?"
+                required
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="reply-pref">
+            <span class="reply-pref-title">Preferência de retorno:</span>
+            <div class="pref-options">
+              <label class="pref-option">
+                <input type="radio" name="preferencia" value="email" checked /> E-mail
+              </label>
+              <label class="pref-option">
+                <input type="radio" name="preferencia" value="whatsapp" /> WhatsApp
+              </label>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-send" id="submitBtn">
+              <i class="fa-solid fa-paper-plane"></i> Enviar Mensagem
+            </button>
+            <span class="form-privacy-note">
+              <i class="fa-solid fa-shield-halved"></i> Seus dados estão seguros e protegidos.
+            </span>
+          </div>
+        </form>
+
+        <!-- Feedback Success Modal/Overlay -->
+        <div class="form-success-overlay" id="successOverlay">
+          <div class="success-icon-wrap">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h3>Mensagem Enviada!</h3>
+          <p id="successMsgText">
+            Obrigado pelo seu contato! Nossa equipe responderá em até 24 horas úteis no seu canal preferido.
+          </p>
+          <button type="button" class="btn-reset" id="resetFormBtn">
+            <i class="fa-solid fa-rotate-left"></i> Enviar outra mensagem
+          </button>
+        </div>
+      </section>
+
+      <!-- Side Widgets Column -->
+      <aside class="contato-side-column">
+        <!-- Suggest Point Card -->
+        <article class="suggest-ecopoint-card">
+          <span class="suggest-tag">
+            <i class="fa-solid fa-map-pin"></i> Colaborativo
+          </span>
+          <h3>Conhece um ecoponto que não está no mapa?</h3>
+          <p>
+            Ajude a comunidade da sua cidade! Envie as informações do ponto de coleta e nossa equipe validará para incluir no mapa oficial do Brasil.
+          </p>
+          <button type="button" class="btn-suggest-point" id="btnQuickSuggest">
+            <i class="fa-solid fa-plus"></i> Indicar Ponto Agora
+          </button>
+        </article>
+
+        <!-- Mascot Tip Widget -->
+        <article class="mascot-tip-widget">
+          <div class="mascot-avatar-small">
+            <img src="img/Otter.png" alt="Lontra da Mobius" />
+          </div>
+          <div class="mascot-tip-text">
+            <strong>Dica da Lontra:</strong>
+            <p>
+              Procurando onde descartar vidro, papel ou eletrônicos agora mesmo? Nosso
+              <a href="pntosdecoleta.html" style="color:#588157; font-weight:700; text-decoration:underline;">mapa com mais de 540 pontos</a>
+              permite filtrar por estado e bairro em poucos segundos!
+            </p>
+          </div>
+        </article>
+      </aside>
+    </div>
+
+    <!-- FAQ Accordion Section -->
+    <section class="contato-faq-section" aria-label="Perguntas frequentes">
+      <div class="contato-faq-header">
+        <h2>Dúvidas Rápidas Antes de Enviar</h2>
+        <p>Veja se sua pergunta já está respondida aqui</p>
+      </div>
+
+      <div class="accordion-list">
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>1. A Mobius cobra alguma taxa para cadastrar ou consultar ecopontos?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>
+              Não! A plataforma Mobius é <strong>100% gratuita</strong> e de livre acesso para todos os cidadãos, escolas, cooperativas e empresas. Nosso objetivo é incentivar a cultura do descarte consciente em todo o país.
+            </p>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>2. Como funciona a moderação de novos pontos de coleta sugeridos?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>
+              Após o envio da sugestão pelo formulário, nossa equipe verifica o endereço, materiais aceitos e horários de funcionamento junto ao ecoponto ou órgão municipal. Uma vez verificado, ele é adicionado ao mapa público.
+            </p>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>3. Como propor palestras ou programas de educação ambiental na minha escola/empresa?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>
+              Basta selecionar a categoria <em>"Parcerias"</em> no formulário acima, preencher os dados da sua instituição e detalhar seu interesse. Entraremos em contato com materiais e orientações pedagógicas para a sua comunidade.
+            </p>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>4. O que devo fazer se encontrar um ponto de coleta desativado no mapa?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>
+              Selecione o botão <em>"Reportar Ponto"</em> no formulário e informe o nome ou localização do ponto. Nossa equipe atualizará a base de dados imediatamente para garantir informações confiáveis.
+            </p>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button type="button" class="accordion-trigger" aria-expanded="false">
+            <span>5. Qual o tempo médio de resposta para mensagens enviadas?</span>
+            <span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>
+              Respondemos todas as mensagens em até <strong>24 horas úteis</strong> (de segunda a sexta-feira, das 8h às 18h), seja por e-mail ou WhatsApp, de acordo com a sua preferência indicada.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contato">
+    <div class="footer-content">
+      <h2>Fale com a Mobius</h2>
+      <p class="footer-subtitle">Tem dúvidas sobre coleta seletiva? Chama a gente.</p>
+
+      <ul class="contact-list">
+        <li>
+          <a href="mailto:contato@mobiusreciclagem.com.br">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            contato@mobiusreciclagem.com.br
+          </a>
+        </li>
+        <li>
+          <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+            WhatsApp: (00) 00000-0000
+          </a>
+        </li>
+        <li>
+          <a href="https://instagram.com/mobiusreciclagem" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            @mobiusreciclagem
+          </a>
+        </li>
+      </ul>
+
+      <p class="footer-copy">Mobius Reciclagem - Cuidando da natureza com você.</p>
+    </div>
+  </footer>
+
+  <!-- Interactivity Script -->
+  <script>
+    // 1. Copy Email Button
+    const copyEmailBtn = document.getElementById("copyEmailBtn");
+    const emailCopiedToast = document.getElementById("emailCopiedToast");
+    if (copyEmailBtn) {
+      copyEmailBtn.addEventListener("click", () => {
+        const email = "contato@mobiusreciclagem.com.br";
+        navigator.clipboard.writeText(email).then(() => {
+          emailCopiedToast.classList.add("show");
+          setTimeout(() => emailCopiedToast.classList.remove("show"), 2000);
+        });
+      });
+    }
+
+    // 2. Topic Pills Selector & Dynamic Fields
+    const topicPills = document.querySelectorAll(".topic-pill");
+    const assuntoHidden = document.getElementById("assuntoHidden");
+    const extraPontoField = document.getElementById("extraPontoField");
+    const extraParceriaField = document.getElementById("extraParceriaField");
+    const mensagemTextarea = document.getElementById("mensagem");
+
+    function selectTopic(subject, triggerElement) {
+      topicPills.forEach((p) => p.classList.remove("active"));
+      if (triggerElement) triggerElement.classList.add("active");
+      assuntoHidden.value = subject;
+
+      // Toggle dynamic fields
+      if (subject.includes("Ponto")) {
+        extraPontoField.style.display = "flex";
+        extraParceriaField.style.display = "none";
+        mensagemTextarea.placeholder = "Conte mais sobre o ecoponto (horários, quem gerencia, tipos de resíduos aceitos)...";
+      } else if (subject.includes("Parceria")) {
+        extraPontoField.style.display = "none";
+        extraParceriaField.style.display = "flex";
+        mensagemTextarea.placeholder = "Descreva a proposta de parceria ou ação que gostaria de desenvolver com a Mobius...";
+      } else {
+        extraPontoField.style.display = "none";
+        extraParceriaField.style.display = "none";
+        mensagemTextarea.placeholder = "Como podemos te ajudar hoje?";
+      }
+    }
+
+    topicPills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        selectTopic(pill.dataset.subject, pill);
+      });
+    });
+
+    // 3. Quick Suggest button from side widget
+    const btnQuickSuggest = document.getElementById("btnQuickSuggest");
+    if (btnQuickSuggest) {
+      btnQuickSuggest.addEventListener("click", () => {
+        const suggestPill = Array.from(topicPills).find((p) => p.dataset.subject.includes("Ponto"));
+        if (suggestPill) selectTopic(suggestPill.dataset.subject, suggestPill);
+        document.getElementById("formSection").scrollIntoView({ behavior: "smooth" });
+        document.getElementById("enderecoPonto").focus();
+      });
+    }
+
+    // 4. Character Counter for Message
+    const charCounter = document.getElementById("charCounter");
+    if (mensagemTextarea && charCounter) {
+      mensagemTextarea.addEventListener("input", () => {
+        charCounter.textContent = `${mensagemTextarea.value.length} / 500`;
+      });
+    }
+
+    // 5. Phone Input Mask
+    const telefoneInput = document.getElementById("telefone");
+    if (telefoneInput) {
+      telefoneInput.addEventListener("input", (e) => {
+        let val = e.target.value.replace(/\D/g, "");
+        if (val.length > 11) val = val.slice(0, 11);
+        if (val.length > 6) {
+          e.target.value = `(${val.slice(0, 2)}) ${val.slice(2, 7)}-${val.slice(7)}`;
+        } else if (val.length > 2) {
+          e.target.value = `(${val.slice(0, 2)}) ${val.slice(2)}`;
+        } else if (val.length > 0) {
+          e.target.value = `(${val}`;
+        }
+      });
+    }
+
+    // 6. Form Submission → envia para o back-end via fetch
+    const contactForm = document.getElementById("contactForm");
+    const successOverlay = document.getElementById("successOverlay");
+    const resetFormBtn = document.getElementById("resetFormBtn");
+    const submitBtn = document.getElementById("submitBtn");
+
+    // URL base do back-end Spring Boot
+    const API_BASE = "http://localhost:80";
+
+    if (contactForm) {
+      contactForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+
+        const nome     = document.getElementById("nome").value.trim();
+        const email    = document.getElementById("email").value.trim();
+        const telefone = document.getElementById("telefone").value.trim();
+        const cidade   = document.getElementById("cidade").value.trim();
+        const assunto  = document.getElementById("assuntoHidden").value;
+        const mensagem = document.getElementById("mensagem").value.trim();
+        const preferencia = contactForm.querySelector('input[name="preferencia"]:checked')?.value || "email";
+        const enderecoPonto = document.getElementById("enderecoPonto").value.trim();
+        const tipoParceria  = document.getElementById("tipoParceria").value;
+
+        try {
+          const response = await fetch(`${API_BASE}/api/contato`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              nome, email, telefone, cidade,
+              assunto, mensagem, preferencia,
+              enderecoPonto, tipoParceria,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (data.ok) {
+            successOverlay.classList.add("is-visible");
+          } else {
+            alert(data.erro || "Erro ao enviar mensagem. Verifique os campos e tente novamente.");
+          }
+        } catch (err) {
+          alert("Não foi possível conectar ao servidor. Verifique se o back-end está em execução.");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar Mensagem';
+        }
+      });
+    }
+
+    if (resetFormBtn) {
+      resetFormBtn.addEventListener("click", () => {
+        contactForm.reset();
+        charCounter.textContent = "0 / 500";
+        selectTopic("Dúvida Geral sobre Reciclagem", topicPills[0]);
+        successOverlay.classList.remove("is-visible");
+      });
+    }
+
+    // 7. Accordion FAQ logic
+    const accordionItems = document.querySelectorAll(".accordion-item");
+    accordionItems.forEach((item) => {
+      const trigger = item.querySelector(".accordion-trigger");
+      const content = item.querySelector(".accordion-content");
+
+      trigger.addEventListener("click", () => {
+        const isOpen = item.classList.contains("is-open");
+
+        // Close other items
+        accordionItems.forEach((other) => {
+          if (other !== item) {
+            other.classList.remove("is-open");
+            other.querySelector(".accordion-trigger").setAttribute("aria-expanded", "false");
+            other.querySelector(".accordion-content").style.maxHeight = null;
+          }
+        });
+
+        // Toggle current item
+        if (isOpen) {
+          item.classList.remove("is-open");
+          trigger.setAttribute("aria-expanded", "false");
+          content.style.maxHeight = null;
+        } else {
+          item.classList.add("is-open");
+          trigger.setAttribute("aria-expanded", "true");
+          content.style.maxHeight = content.scrollHeight + 30 + "px";
+        }
+      });
+    });
+  </script>
+
+  <script src="teste.js"></script>
+</body>
+</html>

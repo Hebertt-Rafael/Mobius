@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobius | Reciclagem Inteligente com Impacto</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+<body>
+  <script>
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("js-reveal");
+    }
+  </script>
+
+  <header>
+    <nav>
+      <i class="fa-solid fa-otter brand-icon" aria-hidden="true"></i>
+      <a class="logo" href="index.html">Mobius</a>
+      <div class="mobile-menu">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+      <ul class="nav-list">
+        <li><a href="sobre.html">Sobre</a></li>
+        <li><a href="pntosdecoleta.html">Pontos de coleta</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        <li><a href="login.html">Entrar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+      <div class="hero-text">
+        <h4><i class="fa-solid fa-seedling" aria-hidden="true"></i> Reciclagem Inteligente</h4>
+        <h1>A lontra da Mobius te ajuda a reciclar melhor</h1>
+        <p>
+          Transformamos descarte em impacto positivo. Descubra como separar seus
+          resíduos, encontrar pontos de coleta em todo o Brasil e acompanhar o efeito das suas
+          atitudes no meio ambiente.
+        </p>
+        <div class="hero-actions">
+          <a href="pntosdecoleta.html" class="cta-button primary">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i> Encontrar Pontos de Coleta
+          </a>
+          <a href="sobre.html" class="cta-button secondary">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i> Conhecer Nossa História
+          </a>
+        </div>
+      </div>
+
+      <section class="carousel" aria-label="Ações de reciclagem">
+        <button class="carousel-btn prev" aria-label="Slide anterior">&#10094;</button>
+        <div class="carousel-track-container">
+          <div class="carousel-track">
+            <article class="slide current-slide">
+              <img src="img/Otter.png" alt="Mascote lontra da Mobius" />
+              <div class="slide-caption">Nosso mascote cuida dos rios e inspira mudança sustentável.</div>
+            </article>
+            <article class="slide">
+              <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&w=1200&q=80" alt="Pessoa separando resíduos recicláveis" />
+              <div class="slide-caption">Comece separando os resíduos por tipo na sua casa.</div>
+            </article>
+            <article class="slide">
+              <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1200&q=80" alt="Lixeiras de coleta seletiva por cor" />
+              <div class="slide-caption">Use as cores certas das lixeiras para cada material.</div>
+            </article>
+            <article class="slide">
+              <img src="https://images.unsplash.com/photo-1528323273322-d81458248d40?auto=format&fit=crop&w=1200&q=80" alt="Reciclagem de plástico" />
+              <div class="slide-caption">Plástico limpo e seco facilita a reciclabilidade.</div>
+            </article>
+            <article class="slide">
+              <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=1200&q=80" alt="Reciclagem de vidro e metal" />
+              <div class="slide-caption">Vidro e metal bem separados geram maior reaproveitamento.</div>
+            </article>
+            <article class="slide">
+              <img src="https://images.unsplash.com/photo-1605600659908-0ef719419d41?auto=format&fit=crop&w=1200&q=80" alt="Ponto de coleta seletiva na cidade" />
+              <div class="slide-caption">Leve os materiais ao ponto de coleta mais próximo.</div>
+            </article>
+            <article class="slide">
+              <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80" alt="Natureza preservada" />
+              <div class="slide-caption">Reciclar protege rios, fauna e o futuro da cidade.</div>
+            </article>
+            <article class="slide">
+              <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=1200&q=80" alt="Comunidade em ação ambiental" />
+              <div class="slide-caption">Com a comunidade unida, o impacto positivo cresce.</div>
+            </article>
+          </div>
+        </div>
+        <button class="carousel-btn next" aria-label="Próximo slide">&#10095;</button>
+        <div class="carousel-dots" aria-label="Indicadores de slide"></div>
+      </section>
+    </section>
+
+    <!-- Impact Stats Bar -->
+    <section class="impact-stats" aria-label="Números da plataforma Mobius">
+      <div class="stat-item">
+        <div class="stat-icon">
+          <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-num">27</span>
+          <span class="stat-label">Estados & DF Mapeados</span>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon">
+          <i class="fa-solid fa-recycle" aria-hidden="true"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-num">+540</span>
+          <span class="stat-label">Ecopontos Cadastrados</span>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon">
+          <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Cores de Descarte</span>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon">
+          <i class="fa-solid fa-heart" aria-hidden="true"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Gratuito e Acessível</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Highlights 3 Cards -->
+    <section class="highlights" id="destaques">
+      <article class="highlight-item">
+        <i class="fa-solid fa-recycle" aria-hidden="true"></i>
+        <h3>Separação Simples</h3>
+        <p>Guia rápido para plástico, vidro, papel, metal e orgânico sem complicação.</p>
+      </article>
+      <article class="highlight-item">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+        <h3>Pontos Próximos</h3>
+        <p>Encontre locais de entrega voluntária e cooperativas perto da sua região.</p>
+      </article>
+      <article class="highlight-item">
+        <i class="fa-solid fa-seedling" aria-hidden="true"></i>
+        <h3>Impacto Real</h3>
+        <p>Acompanhe como pequenas ações diárias viram grandes resultados ambientais.</p>
+      </article>
+    </section>
+
+    <!-- Mascot Teaser Banner -->
+    <section class="mascot-teaser-banner" aria-label="Conheça a inspiração da nossa mascote">
+      <div class="mascot-teaser-img-wrap">
+        <img src="img/Otter.png" alt="Lontra da Mobius" />
+      </div>
+      <div class="mascot-teaser-text">
+        <span class="mascot-teaser-tag"><i class="fa-solid fa-newspaper" aria-hidden="true"></i> Inspiração Real no G1</span>
+        <h3>Você sabia que lontras de verdade inspiraram a Mobius?</h3>
+        <p>
+          Em 2013, o portal G1 divulgou que lontras foram treinadas para recolher garrafas e colocá-las nas lixeiras de reciclagem.
+          Se a própria natureza nos ensina a cuidar dos rios, nós temos todo o poder de transformar nossas cidades.
+        </p>
+      </div>
+      <div>
+        <a href="sobre.html" class="cta-button secondary">
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Ver História
+        </a>
+      </div>
+    </section>
+
+    <!-- Cores das lixeiras Parallax -->
+    <section class="bins-parallax" aria-label="Cores das lixeiras de reciclagem">
+      <div class="parallax-overlay">
+        <div class="bins-header">
+          <h2>Cores das lixeiras e suas funcionalidades</h2>
+          <p>
+            Use a cor certa para cada tipo de resíduo. Separar bem evita contaminação e aumenta o reaproveitamento dos materiais.
+          </p>
+        </div>
+
+        <div class="bins-grid">
+          <article class="bin-card blue">
+            <div class="bin-head">
+              <span class="bin-icon" aria-hidden="true"><i class="fa-solid fa-trash-can"></i></span>
+              <h3><span>Papel</span>Azul</h3>
+            </div>
+            <p>Jornais, cadernos, caixas secas e papelão. Evite papel engordurado ou molhado.</p>
+          </article>
+          <article class="bin-card red">
+            <div class="bin-head">
+              <span class="bin-icon" aria-hidden="true"><i class="fa-solid fa-trash-can"></i></span>
+              <h3><span>Plástico</span>Vermelho</h3>
+            </div>
+            <p>Garrafas PET, potes, sacolas e frascos limpos. Retire o excesso de resíduos antes.</p>
+          </article>
+          <article class="bin-card green">
+            <div class="bin-head">
+              <span class="bin-icon" aria-hidden="true"><i class="fa-solid fa-trash-can"></i></span>
+              <h3><span>Vidro</span>Verde</h3>
+            </div>
+            <p>Garrafas e potes sem tampa metálica. Cuidado com cacos: embale com segurança.</p>
+          </article>
+          <article class="bin-card yellow">
+            <div class="bin-head">
+              <span class="bin-icon" aria-hidden="true"><i class="fa-solid fa-trash-can"></i></span>
+              <h3><span>Metal</span>Amarelo</h3>
+            </div>
+            <p>Latas de refrigerante, tampas e alumínio em geral. Se possível, enxágue para evitar odores.</p>
+          </article>
+          <article class="bin-card brown">
+            <div class="bin-head">
+              <span class="bin-icon" aria-hidden="true"><i class="fa-solid fa-trash-can"></i></span>
+              <h3><span>Orgânico</span>Marrom</h3>
+            </div>
+            <p>Restos de alimentos, cascas de frutas e borra de café. Ideal para compostagem e adubo natural.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Map Invite Banner -->
+    <section class="map-invite-banner" aria-label="Convite para o mapa de coleta">
+      <div class="map-invite-info">
+        <h2>Encontre Ecopontos em Todo o Brasil</h2>
+        <p>
+          Nosso mapa interativo conta com cobertura nos 26 estados e Distrito Federal.
+          Selecione seu estado, filtre por cidade e bairro e encontre o ponto mais perto da sua rotina.
+        </p>
+        <div class="map-state-pills">
+          <span class="map-state-pill">SP</span>
+          <span class="map-state-pill">RJ</span>
+          <span class="map-state-pill">MG</span>
+          <span class="map-state-pill">PR</span>
+          <span class="map-state-pill">RS</span>
+          <span class="map-state-pill">BA</span>
+          <span class="map-state-pill">PE</span>
+          <span class="map-state-pill">+20 Estados</span>
+        </div>
+      </div>
+      <div class="map-invite-action">
+        <a href="pntosdecoleta.html" class="cta-button secondary" style="background:#fff; color:#2f4734;">
+          <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i> Abrir Mapa do Brasil
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ Quick Guide: Onde Descartar? -->
+    <section class="faq-quick-guide" aria-label="Dúvidas frequentes sobre descarte">
+      <div class="faq-header">
+        <h2>Onde Descartar? Dúvidas Frequentes</h2>
+        <p>Dicas práticas para os itens mais comuns que geram confusão na hora de reciclar</p>
+      </div>
+
+      <div class="faq-grid">
+        <article class="faq-card">
+          <div class="faq-card-icon">🍕</div>
+          <h4>Caixa de Pizza</h4>
+          <p>A parte engordurada com queijo vai no lixo orgânico/rejeito. A tampa limpa pode ser reciclada no papel (azul).</p>
+          <span class="faq-card-tag org">Orgânico / Papel</span>
+        </article>
+
+        <article class="faq-card">
+          <div class="faq-card-icon">🧴</div>
+          <h4>Potes e Frascos PET</h4>
+          <p>Passe uma água rápida para tirar resíduos líquidos. Embalagens secas vão direto na lixeira vermelha.</p>
+          <span class="faq-card-tag rec">Plástico (Vermelho)</span>
+        </article>
+
+        <article class="faq-card">
+          <div class="faq-card-icon">🪞</div>
+          <h4>Espelhos e Cerâmicas</h4>
+          <p>Não misture com garrafas de vidro comuns. Embale em jornal ou papelão e descarte no lixo não-reciclável.</p>
+          <span class="faq-card-tag warn">Lixo Comum / Rejeito</span>
+        </article>
+
+        <article class="faq-card">
+          <div class="faq-card-icon">🔋</div>
+          <h4>Pilhas e Baterias</h4>
+          <p>Contêm metais pesados tóxicos. Nunca descarte no lixo comum; leve a ecopontos especializados do nosso mapa.</p>
+          <span class="faq-card-tag special">Ponto Especializado</span>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contato">
+    <div class="footer-content">
+      <h2>Fale com a Mobius</h2>
+      <p class="footer-subtitle">Tem dúvidas sobre coleta seletiva? Chama a gente.</p>
+
+      <ul class="contact-list">
+        <li>
+          <a href="mailto:contato@mobiusreciclagem.com.br">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            contato@mobiusreciclagem.com.br
+          </a>
+        </li>
+        <li>
+          <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+            WhatsApp: (00) 00000-0000
+          </a>
+        </li>
+        <li>
+          <a href="https://instagram.com/mobiusreciclagem" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            @mobiusreciclagem
+          </a>
+        </li>
+      </ul>
+
+      <p class="footer-copy">Mobius Reciclagem - Cuidando da natureza com você.</p>
+    </div>
+  </footer>
+
+  <script src="teste.js"></script>
+</body>
+</html>
